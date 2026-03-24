@@ -1,0 +1,363 @@
+{
+  "meta": {
+    "domain": "카드뉴스 자동화",
+    "version": "0.1.0",
+    "created_at": "2026-03-24",
+    "generated_by": "meta-pipe Phase A+B",
+    "input_prompt": "카드뉴스 자동화 도구를 만들고 싶어"
+  },
+  "pipeline": {
+    "name": "card-news-automation",
+    "description": "텍스트 입력으로 멀티 플랫폼 카드뉴스 이미지를 자동 생성하는 도구 개발 파이프라인",
+    "total_steps": 8,
+    "approval_required_count": 4,
+    "steps": [
+      {
+        "id": "step-1",
+        "name": "도메인 용어 & 요구사항 정의",
+        "name_en": "Domain Glossary & Requirements",
+        "purpose": "카드뉴스 도메인 용어를 통일하고 MVP 기능 범위를 확정",
+        "tasks": [
+          "도메인 용어 사전 작성 (한/영 매핑)",
+          "지원 플랫폼 목록 확정",
+          "판형/해상도 매트릭스 정의",
+          "사용자 페르소나 정의",
+          "MVP 기능 범위 확정"
+        ],
+        "outputs": [
+          {
+            "file": "docs/02-design/glossary.md",
+            "format": "markdown",
+            "description": "도메인 용어 사전"
+          },
+          {
+            "file": "docs/02-design/requirements.md",
+            "format": "markdown",
+            "description": "기능 요구사항 명세"
+          }
+        ],
+        "done_criteria": [
+          "모든 도메인 용어에 한/영 매핑 존재",
+          "지원 플랫폼별 사이즈 매트릭스 완성",
+          "MVP vs Future 기능 구분 완료"
+        ],
+        "domain_warnings": [
+          "카드와 슬라이드 용어 혼용 금지",
+          "플랫폼별 사이즈 제약 하드코딩 금지"
+        ],
+        "approval_required": true,
+        "approval_reason": "용어 정의와 기능 범위는 이후 모든 단계의 기초",
+        "depends_on": []
+      },
+      {
+        "id": "step-2",
+        "name": "데이터 모델 설계",
+        "name_en": "Data Model Design",
+        "purpose": "카드뉴스 구성요소를 표현하는 데이터 구조 설계",
+        "tasks": [
+          "핵심 엔티티 정의 (Project, Slide, Element, Template, StyleGuide, ExportConfig)",
+          "엔티티 간 관계 정의",
+          "JSON Schema 작성",
+          "타입 시스템 설계",
+          "마이그레이션 전략 수립"
+        ],
+        "outputs": [
+          {
+            "file": "docs/02-design/data-model.md",
+            "format": "markdown",
+            "description": "데이터 모델 설계서"
+          },
+          {
+            "file": "schemas/card-news.schema.json",
+            "format": "json-schema",
+            "description": "JSON Schema 정의"
+          },
+          {
+            "file": "schemas/examples/",
+            "format": "json",
+            "description": "예시 데이터 파일"
+          }
+        ],
+        "done_criteria": [
+          "모든 카드뉴스 구성요소가 모델로 표현 가능",
+          "JSON Schema 유효성 검증 통과",
+          "최소 3개 도메인 예시로 모델 검증"
+        ],
+        "domain_warnings": [
+          "Element 다형성 처리 (Text/Image/Shape)",
+          "슬라이드 타입별 필수 요소 차이 반영",
+          "접근성 필드(alt_text) 필수화",
+          "라이선스 정보 추적 필드 포함"
+        ],
+        "approval_required": true,
+        "approval_reason": "데이터 모델은 전체 아키텍처의 뼈대",
+        "depends_on": ["step-1"]
+      },
+      {
+        "id": "step-3",
+        "name": "템플릿 엔진 설계",
+        "name_en": "Template Engine Design",
+        "purpose": "재사용 가능한 카드뉴스 템플릿 시스템 설계",
+        "tasks": [
+          "템플릿 구조 설계 (레이아웃 슬롯 시스템)",
+          "기본 레이아웃 유형 정의",
+          "스타일 변수 시스템 설계",
+          "템플릿 상속/조합 메커니즘",
+          "슬라이드 타입별 기본 템플릿 작성"
+        ],
+        "outputs": [
+          {
+            "file": "docs/02-design/template-engine.md",
+            "format": "markdown",
+            "description": "템플릿 엔진 설계서"
+          },
+          {
+            "file": "templates/",
+            "format": "mixed",
+            "description": "기본 템플릿 정의 파일"
+          }
+        ],
+        "done_criteria": [
+          "최소 5개 기본 템플릿 정의 완료",
+          "스타일 변수 변경만으로 다른 분위기 생성 가능",
+          "cover/body/closing 각각 2개 이상 레이아웃 변형"
+        ],
+        "domain_warnings": [
+          "텍스트 길이에 따른 자동 폰트 크기 조정 필요",
+          "이미지 비율에 따른 자동 crop/fit 전략",
+          "플랫폼별 판형 차이를 템플릿 레벨에서 흡수"
+        ],
+        "approval_required": false,
+        "depends_on": ["step-2"]
+      },
+      {
+        "id": "step-4",
+        "name": "콘텐츠 파이프라인 설계",
+        "name_en": "Content Pipeline Design",
+        "purpose": "텍스트/주제에서 카드뉴스 콘텐츠를 자동 생성하는 파이프라인 설계",
+        "tasks": [
+          "입력 형식 정의 (자유 텍스트, 구조화 데이터, URL)",
+          "텍스트 -> 슬라이드 분할 알고리즘 설계",
+          "카피라이팅 프롬프트 설계",
+          "이미지 선택/생성 전략 수립",
+          "스토리라인 자동 구성 로직"
+        ],
+        "outputs": [
+          {
+            "file": "docs/02-design/content-pipeline.md",
+            "format": "markdown",
+            "description": "콘텐츠 파이프라인 설계서"
+          },
+          {
+            "file": "prompts/",
+            "format": "markdown",
+            "description": "LLM 프롬프트 템플릿"
+          }
+        ],
+        "done_criteria": [
+          "자유 텍스트 입력으로 슬라이드 구성 자동 생성",
+          "카드당 1메시지 원칙 준수",
+          "3가지 입력 유형에서 작동"
+        ],
+        "domain_warnings": [
+          "카드당 텍스트 제한: 제목 15자, 본문 50자 권장",
+          "스토리 흐름 자연스러움 검증 필요",
+          "표지=호기심 유발, 마지막장=CTA 패턴",
+          "이미지 키워드와 텍스트의 의미적 일치"
+        ],
+        "approval_required": true,
+        "approval_reason": "콘텐츠 품질이 최종 결과물의 핵심",
+        "depends_on": ["step-2"]
+      },
+      {
+        "id": "step-5",
+        "name": "렌더링 엔진 구현",
+        "name_en": "Rendering Engine Implementation",
+        "purpose": "데이터 모델 + 템플릿 + 콘텐츠를 결합하여 이미지 생성",
+        "tasks": [
+          "렌더링 방식 확정 (HTML/CSS -> Puppeteer 권장)",
+          "HTML 템플릿 렌더러 구현",
+          "폰트 임베딩/로딩 시스템",
+          "이미지 합성 및 필터 처리",
+          "렌더링 품질 최적화"
+        ],
+        "outputs": [
+          {
+            "file": "src/renderer/",
+            "format": "typescript",
+            "description": "렌더링 엔진 소스 코드"
+          },
+          {
+            "file": "docs/02-design/rendering-engine.md",
+            "format": "markdown",
+            "description": "렌더링 엔진 설계서"
+          }
+        ],
+        "done_criteria": [
+          "데이터 모델 입력으로 이미지 출력 가능",
+          "1080px 기준 선명 (2x DPI 지원)",
+          "한글 폰트 렌더링 정상",
+          "슬라이드 1장당 렌더링 3초 이내"
+        ],
+        "domain_warnings": [
+          "한글 폰트 렌더링이 최대 기술적 과제",
+          "행간 계산이 CSS와 디자인 도구에서 상이할 수 있음",
+          "이미지 위 텍스트 가독성 보장 (오버레이 등)",
+          "Retina 디스플레이 대응 (2x)"
+        ],
+        "approval_required": false,
+        "depends_on": ["step-3", "step-4"]
+      },
+      {
+        "id": "step-6",
+        "name": "플랫폼 어댑터 & 내보내기",
+        "name_en": "Platform Adapters & Export",
+        "purpose": "각 SNS 플랫폼에 맞는 형식으로 변환 및 내보내기",
+        "tasks": [
+          "플랫폼별 어댑터 구현",
+          "배치 내보내기",
+          "파일 네이밍 컨벤션",
+          "이미지 포맷 최적화",
+          "플랫폼 API 직접 게시 (optional)"
+        ],
+        "outputs": [
+          {
+            "file": "src/exporters/",
+            "format": "typescript",
+            "description": "플랫폼별 내보내기 모듈"
+          },
+          {
+            "file": "docs/02-design/export-spec.md",
+            "format": "markdown",
+            "description": "내보내기 사양"
+          }
+        ],
+        "done_criteria": [
+          "최소 3개 플랫폼 지원",
+          "멀티 플랫폼 동시 내보내기 가능",
+          "출력 파일 용량 최적화 (30MB 이내)"
+        ],
+        "domain_warnings": [
+          "플랫폼 사이즈 제약 수시 변경 -> 설정 파일 관리",
+          "텍스트 중심=PNG, 사진 중심=JPG",
+          "파일명에 슬라이드 순서 포함",
+          "ZIP 묶음 내보내기 지원"
+        ],
+        "approval_required": false,
+        "depends_on": ["step-5"]
+      },
+      {
+        "id": "step-7",
+        "name": "접근성 & 법적 준수 레이어",
+        "name_en": "Accessibility & Legal Compliance",
+        "purpose": "접근성 문제와 저작권 리스크를 시스템 레벨에서 방지",
+        "tasks": [
+          "접근성 텍스트 자동 생성 (alt text)",
+          "이미지 라이선스 추적 시스템",
+          "폰트 라이선스 검증 로직",
+          "접근성 보고서 생성",
+          "저작권 출처 자동 삽입"
+        ],
+        "outputs": [
+          {
+            "file": "src/compliance/",
+            "format": "typescript",
+            "description": "접근성/법적 준수 모듈"
+          },
+          {
+            "file": "docs/02-design/accessibility-spec.md",
+            "format": "markdown",
+            "description": "접근성 사양"
+          }
+        ],
+        "done_criteria": [
+          "모든 슬라이드에 alt text 존재",
+          "이미지/폰트 라이선스 정보 추적 가능",
+          "텍스트 전용 버전 자동 생성",
+          "라이선스 위반 시 경고"
+        ],
+        "domain_warnings": [
+          "이미지 저작권 위반: 3년 이하 징역/3천만원 이하 벌금",
+          "한국 오픈소스 폰트 기본 제공 (나눔스퀘어, 프리텐다드)",
+          "CC0 이미지 소스 연동 (Pexels, Unsplash)",
+          "WCAG 2.1 가이드라인 참조"
+        ],
+        "approval_required": true,
+        "approval_reason": "법적 리스크가 높은 영역",
+        "depends_on": ["step-2"]
+      },
+      {
+        "id": "step-8",
+        "name": "통합 테스트 & 품질 검증",
+        "name_en": "Integration Testing & Quality Assurance",
+        "purpose": "전체 파이프라인 E2E 검증",
+        "tasks": [
+          "E2E 테스트 시나리오 작성",
+          "시각적 회귀 테스트",
+          "성능 벤치마크",
+          "카드뉴스 품질 체크리스트 자동 검증",
+          "사용자 피드백 수집"
+        ],
+        "outputs": [
+          {
+            "file": "tests/e2e/",
+            "format": "typescript",
+            "description": "E2E 테스트 코드"
+          },
+          {
+            "file": "tests/snapshots/",
+            "format": "png",
+            "description": "시각적 스냅샷"
+          },
+          {
+            "file": "docs/02-design/quality-checklist.md",
+            "format": "markdown",
+            "description": "품질 체크리스트"
+          }
+        ],
+        "done_criteria": [
+          "3개 도메인 E2E 테스트 통과",
+          "렌더링 결과 시각적 일관성 확인",
+          "10장 카드뉴스 전체 생성 30초 이내",
+          "품질 체크리스트 80% 이상 자동 검증"
+        ],
+        "domain_warnings": [
+          "가독성, 일관성, 여백, 폰트 크기, 이미지 품질 체크",
+          "모바일 시뮬레이션 필수 (375px 기준)",
+          "한글 특화: 줄바꿈, 자간, 행간, 장평",
+          "실제 SNS 업로드 후 렌더링 확인"
+        ],
+        "approval_required": false,
+        "depends_on": ["step-5", "step-6", "step-7"]
+      }
+    ]
+  },
+  "domain_knowledge": {
+    "key_entities": ["Project", "Slide", "Element", "Template", "StyleGuide", "ExportConfig"],
+    "slide_types": ["cover", "body", "closing"],
+    "element_types": ["text", "image", "shape", "icon", "logo"],
+    "supported_platforms": [
+      { "name": "instagram_feed", "aspect_ratio": "1:1", "size": "1080x1080" },
+      { "name": "instagram_portrait", "aspect_ratio": "4:5", "size": "1080x1350" },
+      { "name": "instagram_story", "aspect_ratio": "9:16", "size": "1080x1920" },
+      { "name": "facebook", "aspect_ratio": "16:9", "size": "1920x1080" },
+      { "name": "blog", "aspect_ratio": "16:9", "size": "1920x1080" }
+    ],
+    "recommended_tech_stack": {
+      "rendering": "HTML/CSS + Puppeteer (node-html-to-image)",
+      "templating": "Handlebars or EJS",
+      "image_processing": "Sharp",
+      "content_generation": "LLM (GPT-4 / Claude)",
+      "automation": "n8n or Make.com (optional)"
+    },
+    "legal_risks": [
+      "이미지 저작권 침해: 3년 이하 징역/3천만원 이하 벌금",
+      "폰트 라이선스 위반",
+      "접근성 미비 (시각장애인)"
+    ],
+    "safe_resources": {
+      "fonts": ["나눔스퀘어 (OFL)", "프리텐다드 (OFL)", "Noto Sans KR (OFL)"],
+      "images": ["Pexels (CC0)", "Unsplash (free license)", "Pixabay (CC0)"]
+    }
+  }
+}

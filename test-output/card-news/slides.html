@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>카드뉴스: 재택근무 생산성 팁</title>
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 24px;
+    font-family: 'Pretendard', sans-serif;
+  }
+
+  .slide {
+    width: 1080px;
+    height: 1080px;
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+    flex-shrink: 0;
+  }
+
+  .slide-label {
+    font-size: 14px;
+    color: #999;
+    margin-bottom: -16px;
+  }
+
+  /* === Slide 1: Cover === */
+  .slide-1 {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px;
+  }
+  .slide-1 .badge {
+    background: #e94560;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 700;
+    padding: 12px 32px;
+    border-radius: 40px;
+    margin-bottom: 48px;
+    letter-spacing: 2px;
+  }
+  .slide-1 .title {
+    color: #ffffff;
+    font-size: 72px;
+    font-weight: 800;
+    line-height: 1.3;
+    margin-bottom: 32px;
+  }
+  .slide-1 .subtitle {
+    color: rgba(255,255,255,0.7);
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  /* === Slide 2~6: Body === */
+  .slide-body {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+  }
+  .slide-body .top-bar {
+    height: 8px;
+    width: 100%;
+  }
+  .slide-body .step-badge {
+    position: absolute;
+    top: 48px;
+    left: 64px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: 800;
+    color: #fff;
+  }
+  .slide-body .content {
+    padding: 48px 64px;
+    padding-top: 60px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .slide-body .content .title {
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 40px;
+    margin-left: 100px;
+    color: #1a1a2e;
+  }
+  .slide-body .content .body-text {
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 1.8;
+    color: #444;
+    margin-left: 100px;
+    padding-right: 40px;
+  }
+  .slide-body .content .highlight {
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+  .slide-body .icon-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    font-size: 120px;
+  }
+  .slide-body .bottom-line {
+    position: absolute;
+    bottom: 48px;
+    left: 64px;
+    right: 64px;
+    height: 1px;
+    background: #e0e0e0;
+  }
+  .slide-body .page-num {
+    position: absolute;
+    bottom: 20px;
+    right: 64px;
+    font-size: 24px;
+    color: #bbb;
+    font-weight: 500;
+  }
+
+  /* Color themes per slide */
+  .slide-2 .top-bar, .slide-2 .step-badge { background: #e94560; }
+  .slide-3 .top-bar, .slide-3 .step-badge { background: #0f3460; }
+  .slide-4 .top-bar, .slide-4 .step-badge { background: #e94560; }
+  .slide-5 .top-bar, .slide-5 .step-badge { background: #0f3460; }
+  .slide-6 .top-bar, .slide-6 .step-badge { background: #e94560; }
+
+  /* === Slide 7: Closing === */
+  .slide-7 {
+    background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px;
+  }
+  .slide-7 .cta {
+    color: #ffffff;
+    font-size: 60px;
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 48px;
+  }
+  .slide-7 .sub {
+    color: rgba(255,255,255,0.6);
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.6;
+    margin-bottom: 64px;
+  }
+  .slide-7 .btn {
+    background: #e94560;
+    color: #fff;
+    font-size: 32px;
+    font-weight: 700;
+    padding: 24px 64px;
+    border-radius: 60px;
+    display: inline-block;
+  }
+</style>
+</head>
+<body>
+
+<!-- Slide 1: Cover -->
+<p class="slide-label">1/7 - Cover</p>
+<div class="slide slide-1" id="slide-1">
+  <div class="badge">WORK FROM HOME</div>
+  <div class="title">집에서 일하는데<br>왜 더 바쁠까?</div>
+  <div class="subtitle">재택근무 생산성을 2배로 올리는<br>5가지 검증된 방법</div>
+</div>
+
+<!-- Slide 2: Body -->
+<p class="slide-label">2/7 - Body</p>
+<div class="slide slide-body slide-2" id="slide-2">
+  <div class="top-bar"></div>
+  <div class="step-badge">1</div>
+  <div class="content">
+    <div class="title">공간을 분리하세요</div>
+    <div class="body-text">
+      침대에서 노트북 펴지 마세요.<br><br>
+      <span class="highlight">전용 작업 공간</span>이 있는 사람은<br>
+      생산성이 <span class="highlight">32% 더 높습니다.</span><br><br>
+      작은 책상 하나라도 괜찮아요.
+    </div>
+  </div>
+  <div class="bottom-line"></div>
+  <div class="page-num">2 / 7</div>
+</div>
+
+<!-- Slide 3: Body -->
+<p class="slide-label">3/7 - Body</p>
+<div class="slide slide-body slide-3" id="slide-3">
+  <div class="top-bar"></div>
+  <div class="step-badge">2</div>
+  <div class="content">
+    <div class="title">출근 루틴을 만드세요</div>
+    <div class="body-text">
+      잠옷 차림으로 일 시작하면<br>
+      뇌가 <span class="highlight">"아직 쉬는 시간"</span>이라 인식합니다.<br><br>
+      옷 갈아입기, 커피 한 잔, 10분 산책.<br>
+      <span class="highlight">작은 루틴이 스위치를 켭니다.</span>
+    </div>
+  </div>
+  <div class="bottom-line"></div>
+  <div class="page-num">3 / 7</div>
+</div>
+
+<!-- Slide 4: Body -->
+<p class="slide-label">4/7 - Body</p>
+<div class="slide slide-body slide-4" id="slide-4">
+  <div class="top-bar"></div>
+  <div class="step-badge">3</div>
+  <div class="content">
+    <div class="title">시간을 블록으로 나누세요</div>
+    <div class="body-text">
+      <span class="highlight">90분 집중 + 15분 휴식</span><br>
+      이 사이클이 가장 효과적입니다.<br><br>
+      타이머를 설정하고,<br>
+      휴식 시간엔 반드시 <span class="highlight">화면에서 눈을 떼세요.</span>
+    </div>
+  </div>
+  <div class="bottom-line"></div>
+  <div class="page-num">4 / 7</div>
+</div>
+
+<!-- Slide 5: Body -->
+<p class="slide-label">5/7 - Body</p>
+<div class="slide slide-body slide-5" id="slide-5">
+  <div class="top-bar"></div>
+  <div class="step-badge">4</div>
+  <div class="content">
+    <div class="title">알림을 꺼두세요</div>
+    <div class="body-text">
+      슬랙, 이메일, 카톡 알림은<br>
+      집중력의 <span class="highlight">최대 적</span>입니다.<br><br>
+      <span class="highlight">오전/오후 각 1회</span> 확인 시간을 정하고<br>
+      나머지 시간은 알림을 끄세요.
+    </div>
+  </div>
+  <div class="bottom-line"></div>
+  <div class="page-num">5 / 7</div>
+</div>
+
+<!-- Slide 6: Body -->
+<p class="slide-label">6/7 - Body</p>
+<div class="slide slide-body slide-6" id="slide-6">
+  <div class="top-bar"></div>
+  <div class="step-badge">5</div>
+  <div class="content">
+    <div class="title">퇴근 시간을 지키세요</div>
+    <div class="body-text">
+      재택근무의 가장 큰 함정은<br>
+      <span class="highlight">"항상 일하는 상태"</span>입니다.<br><br>
+      정해진 시간에 노트북을 닫고<br>
+      <span class="highlight">작업 공간을 떠나세요.</span>
+    </div>
+  </div>
+  <div class="bottom-line"></div>
+  <div class="page-num">6 / 7</div>
+</div>
+
+<!-- Slide 7: Closing -->
+<p class="slide-label">7/7 - Closing</p>
+<div class="slide slide-7" id="slide-7">
+  <div class="cta">오늘부터<br>하나만 시작하세요</div>
+  <div class="sub">5가지 중 가장 쉬운 것 하나.<br>작은 변화가 큰 차이를 만듭니다.</div>
+  <div class="btn">저장하고 실천하기</div>
+</div>
+
+</body>
+</html>

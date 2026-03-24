@@ -1,0 +1,88 @@
+{
+  "domain": "카드뉴스 자동화",
+  "investigated_at": "2026-03-24T15:00:00Z",
+  "categories": {
+    "terminology": {
+      "quality": "excellent",
+      "terms": [
+        { "term": "표지(커버)", "term_en": "Cover Page", "description": "첫 번째 슬라이드. 메인 타이틀 + 서브 타이틀 + 배경 이미지. 흥미 유발이 핵심" },
+        { "term": "본문", "term_en": "Body Pages", "description": "2~10장. 제목 + 내용 텍스트 + 배경 이미지/그래픽" },
+        { "term": "마지막 장", "term_en": "Closing Page", "description": "CTA(Call to Action), 브랜드 로고, 출처 표기" },
+        { "term": "슬라이드/카드", "term_en": "Slide/Card", "description": "개별 페이지 단위" },
+        { "term": "톤앤매너", "term_en": "Tone & Manner", "description": "전체 카드뉴스의 시각적 분위기 통일 기준" },
+        { "term": "레이아웃", "term_en": "Layout", "description": "텍스트, 이미지, 그래픽 요소의 배치 구조" },
+        { "term": "행간", "term_en": "Line Height", "description": "줄 간격. 폰트크기 x 1.618 (황금비) 권장" },
+        { "term": "여백", "term_en": "Margin/Padding", "description": "텍스트 주변 빈 공간. 가독성의 핵심" }
+      ],
+      "sources": [
+        "https://pixso.net/kr/news/card-news-design/",
+        "https://brunch.co.kr/@lanlan77/3",
+        "https://www.tooldi.com/social/article/81",
+        "https://slowalk.com/2442"
+      ]
+    },
+    "workflow": {
+      "quality": "excellent",
+      "standard_process": [
+        "기획 & 트렌드 분석 (주제 선정, 타깃 오디언스)",
+        "콘텐츠 구성 (스토리라인, 카피라이팅)",
+        "디자인 & 이미지 (톤앤매너, 레이아웃, 이미지)",
+        "검수 & 배포 (가독성, 플랫폼별 사이즈 조정)"
+      ],
+      "sources": [
+        "https://carat.im/blog/ai-card-news-marketing",
+        "https://www.hanbit.co.kr/channel/view.html?cmscode=CMS4972869598",
+        "https://tyle.io/blog/카드뉴스를-잘-만들-수-있는-7단계-체크리스트?loc=ko"
+      ]
+    },
+    "tech_stack": {
+      "quality": "good",
+      "tools": [
+        { "name": "Tyle.io", "type": "SaaS", "description": "카드뉴스 전문. 29개 레이아웃, 산돌폰트 무료" },
+        { "name": "Canva", "type": "SaaS", "description": "범용 디자인. 카드뉴스 템플릿 다수. Autofill API 제공" },
+        { "name": "Placid", "type": "SaaS", "description": "이미지 자동 생성 API. 인스타 카드뉴스 자동화" },
+        { "name": "APITemplate.io", "type": "SaaS", "description": "REST API로 소셜미디어 이미지 자동 생성" },
+        { "name": "node-html-to-image", "type": "library", "description": "Puppeteer 기반 HTML→이미지 변환" },
+        { "name": "Sharp", "type": "library", "description": "고성능 이미지 합성/처리" },
+        { "name": "Puppeteer", "type": "library", "description": "Headless Chrome으로 HTML 렌더링 후 스크린샷" }
+      ],
+      "recommended_approach": "HTML/CSS → Puppeteer 스크린샷 방식 (가장 유연, 웹 기술 그대로 활용)",
+      "sources": [
+        "https://www.gpters.org/nocode/post/automate-instagram-card-news-rXjaFJF9wKnj462",
+        "https://www.npmjs.com/package/node-html-to-image",
+        "https://apitemplate.io/use-cases/social-media-image-automation/"
+      ]
+    },
+    "data_model": {
+      "quality": "fair",
+      "entities": [
+        { "name": "Project", "fields": ["id", "name", "description", "target_platform", "aspect_ratio", "canvas_size"], "relationships": ["has many Slides", "has one StyleGuide", "has one ExportConfig"] },
+        { "name": "Slide", "fields": ["id", "project_id", "order_index", "slide_type", "template_id", "background", "elements"], "relationships": ["belongs to Project", "has many Elements", "optional Template"] },
+        { "name": "Element", "fields": ["id", "slide_id", "element_type", "position", "rotation", "opacity"], "relationships": ["belongs to Slide"] },
+        { "name": "Template", "fields": ["id", "name", "category", "aspect_ratio", "theme", "font_set", "layout_slots"], "relationships": ["used by many Slides"] },
+        { "name": "StyleGuide", "fields": ["id", "project_id", "color_palette", "fonts", "spacing", "brand_assets"], "relationships": ["belongs to Project"] },
+        { "name": "ExportConfig", "fields": ["id", "format", "quality", "platform_presets", "naming_pattern"], "relationships": ["belongs to Project"] }
+      ],
+      "derived": true,
+      "sources": []
+    },
+    "risks": {
+      "quality": "good",
+      "items": [
+        { "risk": "이미지 저작권 침해", "severity": "high", "mitigation": "CC0 이미지 소스 연동 (Pexels, Unsplash). 라이선스 추적 시스템 구현" },
+        { "risk": "폰트 라이선스 위반", "severity": "high", "mitigation": "오픈소스 폰트 기본 제공 (나눔스퀘어, 프리텐다드)" },
+        { "risk": "접근성 미비", "severity": "medium", "mitigation": "모든 슬라이드에 alt text 생성. 텍스트 전용 버전 제공" },
+        { "risk": "한글 폰트 렌더링 문제", "severity": "medium", "mitigation": "Puppeteer 한글 폰트 경로 설정. 행간/자간 테스트" },
+        { "risk": "플랫폼별 사이즈 미스매치", "severity": "low", "mitigation": "설정 파일 기반 사이즈 관리. 하드코딩 금지" }
+      ],
+      "sources": [
+        "https://namu.wiki/w/카드뉴스",
+        "https://www.elancer.co.kr/blog/detail/284",
+        "https://kmong.com/article/1013"
+      ]
+    }
+  },
+  "webfetch_supplements": [
+    { "url": "https://kiss.kstudy.com/Detail/Ar?key=4059455", "reason": "생성형 AI 카드뉴스 플랫폼 논문 - 아키텍처/데이터 모델 참조", "priority": "high" }
+  ]
+}
