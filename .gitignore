@@ -1,3 +1,14 @@
 node_modules/
 *.log
 .env
+.env.*
+config/client_secret.json
+config/.youtube-token.json
+output/
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Cache & test output
+meta-pipe-cache/
+test-output/

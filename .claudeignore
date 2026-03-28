@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Build & Output
+dist/
+build/
+output/
+test-output/
+*.log
+
+# Cache
+meta-pipe-cache/
+.cache/
+
+# Secrets
+.env
+.env.*
+config/client_secret.json
+config/.youtube-token.json
+
+# IDE & OS
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+Desktop.ini
+
+# Git
+.git/

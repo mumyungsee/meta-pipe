@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "version": "0.1.0",
+    "created_at": "2026-03-27",
+    "model": "NanoBanana Pro (Gemini 2.5 Pro Image)",
+    "canvas": "1280x720 (16:9)",
+    "safety_suffix": "no watermarks, safe for all audiences, 16:9 aspect ratio, 1280x720"
+  },
+  "patterns": [
+    {
+      "id": "tech-gradient",
+      "name": "테크 그라디언트",
+      "layout": "full_bg_center_text",
+      "description": "추상적 테크 그라디언트 배경 + 중앙 한글 타이틀. 범용성 높음.",
+      "prompt": "YouTube thumbnail 1280x720, abstract technology gradient background from deep navy (#0D1B2A) to electric blue (#2D7FF9), subtle glowing particles, bold Korean title text '{{title}}' in vivid yellow (#FFD600) with dark navy outline centered on image, extra bold weight, clean modern design, bright energetic mood, no watermarks, safe for all audiences",
+      "variables": {
+        "title": "{{영상 제목 5자 이내}}"
+      },
+      "best_for": ["일반 AI 팁", "도구 소개", "리스트형 콘텐츠"]
+    },
+    {
+      "id": "screen-glow",
+      "name": "스크린 글로우",
+      "layout": "screen_demo",
+      "description": "빛나는 모니터가 왼쪽 + 오른쪽에 한글 타이틀. AI 시연 영상에 최적.",
+      "prompt": "YouTube thumbnail 1280x720, photorealistic glowing laptop screen on left side showing AI interface, electric blue (#2D7FF9) light from screen, dark navy (#0D1B2A) background, bold Korean title text '{{title}}' in vivid yellow (#FFD600) with dark navy outline on right side, extra bold weight, bright tech atmosphere, soft bokeh, no watermarks, safe for all audiences",
+      "variables": {
+        "title": "{{영상 제목 5자 이내}}"
+      },
+      "best_for": ["AI 도구 시연", "화면 튜토리얼", "소프트웨어 리뷰"]
+    },
+    {
+      "id": "ai-neural",
+      "name": "AI 뉴럴 네트워크",
+      "layout": "full_bg_center_text",
+      "description": "뉴럴 네트워크 시각화 배경 + 중앙 한글 타이틀. AI 기술 콘텐츠에 적합.",
+      "prompt": "YouTube thumbnail 1280x720, abstract neural network visualization with glowing blue (#2D7FF9) nodes and connections on dark navy (#0D1B2A) background, yellow (#FFD600) data stream accents, bold Korean title text '{{title}}' in vivid yellow (#FFD600) with dark navy outline centered, extra bold weight, futuristic clean design, no watermarks, safe for all audiences",
+      "variables": {
+        "title": "{{영상 제목 5자 이내}}"
+      },
+      "best_for": ["AI 개념 설명", "GPT/LLM 관련", "AI 뉴스"]
+    },
+    {
+      "id": "workspace-desk",
+      "name": "워크스페이스 데스크",
+      "layout": "screen_demo",
+      "description": "테크 워크스페이스 왼쪽 + 오른쪽 한글 타이틀. 실용적 느낌.",
+      "prompt": "YouTube thumbnail 1280x720, clean modern tech workspace from above, monitor and keyboard on left side, blue (#2D7FF9) LED ambient lighting, dark desk, bold Korean title text '{{title}}' in vivid yellow (#FFD600) with dark navy outline on right side, extra bold weight, minimal organized look, bright professional, no watermarks, safe for all audiences",
+      "variables": {
+        "title": "{{영상 제목 5자 이내}}"
+      },
+      "best_for": ["생산성 도구", "워크플로우 가이드", "세팅/설정 영상"]
+    },
+    {
+      "id": "futuristic-ui",
+      "name": "미래형 UI 대시보드",
+      "layout": "full_bg_center_text",
+      "description": "홀로그램 UI 요소 + 중앙 한글 타이틀. 시각적 임팩트 강함.",
+      "prompt": "YouTube thumbnail 1280x720, futuristic holographic UI dashboard elements floating in space, electric blue (#2D7FF9) and vivid yellow (#FFD600) glowing panels, dark navy (#0D1B2A) background, bold Korean title text '{{title}}' in vivid yellow (#FFD600) with dark navy outline centered, extra bold weight, cinematic high contrast, no watermarks, safe for all audiences",
+      "variables": {
+        "title": "{{영상 제목 5자 이내}}"
+      },
+      "best_for": ["시리즈 시작", "특별 영상", "AI 미래 전망"]
+    }
+  ],
+  "usage_guide": {
+    "model": "NanoBanana Pro (Gemini 2.5 Pro Image)",
+    "platforms": [
+      "AntiGravity IDE (무료, 무제한)",
+      "OpenRouter: google/gemini-2.5-pro-image (유료)",
+      "Google AI Studio (무료 티어)"
+    ],
+    "tips": [
+      "{{title}}에 영상 제목을 5자 이내로 요약하여 삽입",
+      "HEX 컬러코드를 프롬프트에 직접 명시하면 브랜드 일관성 향상",
+      "한글 텍스트 렌더링 품질이 불만족이면 프롬프트에 font 스타일 상세 지시 추가",
+      "생성 후 텍스트 가독성 확인 필수 (AI 한글 렌더링 한계 가능)"
+    ]
+  }
+}

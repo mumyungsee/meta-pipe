@@ -1,34 +1,33 @@
 {
-  "project_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-  "domain": "카드뉴스 자동화",
-  "input_prompt": "카드뉴스 자동화 도구를 만들고 싶어",
+  "project_id": "yt-thumb-2026-03-25",
+  "domain": "유튜브 섬네일 자동화",
+  "input_prompt": "유튜브 섬네일 자동화 워크플로우를 만들고 싶어",
   "mode": "human",
-  "started_at": "2026-03-24T15:00:00Z",
-  "updated_at": "2026-03-24T16:00:00Z",
+  "started_at": "2026-03-25T10:00:00Z",
+  "updated_at": "2026-03-25T11:00:00Z",
   "current_phase": "C",
   "phase_a": {
     "status": "completed",
     "cache_used": false,
-    "completed_at": "2026-03-24T15:00:00Z"
+    "completed_at": "2026-03-25T10:00:00Z"
   },
   "phase_b": {
     "status": "completed",
-    "total_steps": 8,
-    "completed_at": "2026-03-24T15:10:00Z"
+    "total_steps": 6,
+    "completed_at": "2026-03-25T11:00:00Z"
   },
   "phase_c": {
     "status": "completed",
-    "current_step": 8,
-    "total_steps": 8,
+    "current_step": null,
+    "completed_at": "2026-03-27",
+    "total_steps": 6,
     "steps": [
-      { "id": "step-1", "name": "도메인 용어 & 요구사항 정의", "status": "completed", "approval_required": true, "completed_at": "2026-03-24T15:15:00Z" },
-      { "id": "step-2", "name": "데이터 모델 설계", "status": "completed", "approval_required": true, "completed_at": "2026-03-24T15:20:00Z" },
-      { "id": "step-3", "name": "템플릿 엔진 설계", "status": "completed", "approval_required": false, "completed_at": "2026-03-24T15:25:00Z" },
-      { "id": "step-4", "name": "콘텐츠 파이프라인 설계", "status": "completed", "approval_required": true, "completed_at": "2026-03-24T15:30:00Z" },
-      { "id": "step-5", "name": "렌더링 엔진 구현", "status": "completed", "approval_required": false, "completed_at": "2026-03-24T15:35:00Z" },
-      { "id": "step-6", "name": "플랫폼 어댑터 & 내보내기", "status": "completed", "approval_required": false, "completed_at": "2026-03-24T15:40:00Z" },
-      { "id": "step-7", "name": "접근성 & 법적 준수 레이어", "status": "completed", "approval_required": true, "completed_at": "2026-03-24T15:50:00Z" },
-      { "id": "step-8", "name": "통합 테스트 & 품질 검증", "status": "completed", "approval_required": false, "completed_at": "2026-03-24T16:00:00Z" }
+      { "id": "step-1", "name": "채널 브랜드 & 용어 정의", "status": "completed", "approval_required": true, "approved_at": "2026-03-27" },
+      { "id": "step-2", "name": "프롬프트 엔지니어링 & 검증", "status": "completed", "approval_required": true, "approved_at": "2026-03-27", "note": "NanoBanana Pro로 모델 변경" },
+      { "id": "step-3", "name": "섬네일 생성 자동화", "status": "completed", "approval_required": false, "completed_at": "2026-03-27" },
+      { "id": "step-4", "name": "YouTube API 연동 & 업로드", "status": "completed", "approval_required": false, "completed_at": "2026-03-27" },
+      { "id": "step-5", "name": "정책 준수 & 품질 검증 레이어", "status": "completed", "approval_required": true, "approved_at": "2026-03-27" },
+      { "id": "step-6", "name": "통합 테스트 & A/B 최적화", "status": "completed", "approval_required": false, "completed_at": "2026-03-27" }
     ]
   }
 }
