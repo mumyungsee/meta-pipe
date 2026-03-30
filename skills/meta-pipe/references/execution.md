@@ -36,7 +36,7 @@
 
 ```
 1. Phase A 조사 결과를 맥락으로 활용
-   - docs/domain-discovery.md 또는 캐시에서 관련 정보 참조
+   - docs/03-do/{domain-slug}/domain-discovery.md 또는 캐시에서 관련 정보 참조
    - 도메인 용어 사전의 용어 사용
 
 2. domain_warnings를 산출물에 반영
@@ -56,9 +56,9 @@
 ### 1.3 산출물 파일 저장
 
 ```
-저장 경로: docs/steps/step-{N}-{slug}.md
-  예: docs/steps/step-1-glossary-requirements.md
-      docs/steps/step-2-data-model.md
+저장 경로: docs/03-do/{domain-slug}/steps/step-{N}-{slug}.md
+  예: docs/03-do/{domain-slug}/steps/step-1-glossary-requirements.md
+      docs/03-do/{domain-slug}/steps/step-2-data-model.md
 
 slug 생성: 단계 name_en을 kebab-case로
   "Domain Glossary & Requirements" → "glossary-requirements"
@@ -105,7 +105,7 @@ approval_required = false:
 approval_required = true:
   1. 산출물 생성
   2. 승인 요청 파일 생성:
-     docs/steps/.approval-needed-step-{N}.md
+     docs/03-do/{domain-slug}/steps/.approval-needed-step-{N}.md
      내용: 결정 사항 요약, 대안, 판단 근거
   3. 상태를 "awaiting_approval"로 설정
   4. 다음 단계로 진행하지 않음
@@ -350,7 +350,7 @@ approval_required=false → true 전환:
 ### 산출물 요약
 | Step | 산출물 | 상태 |
 | --- | --- | --- |
-| 1 | docs/steps/step-1-{slug}.md | 완료 |
+| 1 | docs/03-do/{domain-slug}/steps/step-1-{slug}.md | 완료 |
 | ... | ... | ... |
 
 ### 다음 추천 작업

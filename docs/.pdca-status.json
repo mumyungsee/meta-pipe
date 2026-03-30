@@ -26,7 +26,7 @@
     "check": {
       "status": "completed",
       "completed_at": "2026-03-28",
-      "document": "docs/03-analysis/features/youtube-thumbnail-automation.analysis.md",
+      "document": "docs/04-analysis/features/youtube-thumbnail-automation.analysis.md",
       "match_rate_initial": 85,
       "match_rate_final": 91,
       "iterations": 1,
@@ -35,7 +35,7 @@
     "act": {
       "status": "completed",
       "completed_at": "2026-03-28",
-      "document": "docs/04-report/features/youtube-thumbnail-automation.report.md",
+      "document": "docs/05-report/features/youtube-thumbnail-automation.report.md",
       "completion_rate": 91,
       "deferred_to_v2": 5,
       "notes": "완료 리포트 작성 완료. 91% 설계 매칭. 5개 항목 v2.0 백로그 이관. 6개 핵심 기능 배포 완료"
@@ -50,29 +50,29 @@
     "act": "bkit report-generator로 완료 리포트"
   },
   "key_documents": {
-    "pipeline_dir": "docs/pipelines/youtube-thumbnail/",
-    "domain_discovery": "docs/pipelines/youtube-thumbnail/domain-discovery.md",
-    "pipeline_design_md": "docs/pipelines/youtube-thumbnail/pipeline.md",
-    "pipeline_design_json": "docs/pipelines/youtube-thumbnail/pipeline.json",
+    "pipeline_dir": "docs/03-do/youtube-thumbnail/",
+    "domain_discovery": "docs/03-do/youtube-thumbnail/domain-discovery.md",
+    "pipeline_design_md": "docs/03-do/youtube-thumbnail/pipeline.md",
+    "pipeline_design_json": "docs/03-do/youtube-thumbnail/pipeline.json",
     "meta_pipe_status": ".meta-pipe-status.json",
-    "brand_config": "config/brand.json",
-    "prompt_patterns": "config/prompts/prompt-patterns.json",
-    "completion_report": "docs/04-report/features/youtube-thumbnail-automation.report.md",
+    "brand_config": "docs/03-do/youtube-thumbnail/output/config/brand.json",
+    "prompt_patterns": "docs/03-do/youtube-thumbnail/output/config/prompts/prompt-patterns.json",
+    "completion_report": "docs/05-report/features/youtube-thumbnail-automation.report.md",
     "steps": [
-      "docs/pipelines/youtube-thumbnail/steps/step-1-brand-definition.md",
-      "docs/pipelines/youtube-thumbnail/steps/step-2-prompt-engineering.md",
-      "docs/pipelines/youtube-thumbnail/steps/step-3-thumbnail-generation.md",
-      "docs/pipelines/youtube-thumbnail/steps/step-4-youtube-api.md",
-      "docs/pipelines/youtube-thumbnail/steps/step-5-policy-validation.md",
-      "docs/pipelines/youtube-thumbnail/steps/step-6-testing-optimization.md"
+      "docs/03-do/youtube-thumbnail/steps/step-1-brand-definition.md",
+      "docs/03-do/youtube-thumbnail/steps/step-2-prompt-engineering.md",
+      "docs/03-do/youtube-thumbnail/steps/step-3-thumbnail-generation.md",
+      "docs/03-do/youtube-thumbnail/steps/step-4-youtube-api.md",
+      "docs/03-do/youtube-thumbnail/steps/step-5-policy-validation.md",
+      "docs/03-do/youtube-thumbnail/steps/step-6-testing-optimization.md"
     ]
   },
   "implementation": {
-    "src/generator/": "NanoBanana Pro 이미지 생성 (api_client, prompt_builder, cli)",
-    "src/youtube/": "YouTube API 연동 (auth, uploader, metadata, cli)",
-    "src/validator/": "정책/품질 검증 (policy_checker, quality_checker, cli)",
-    "src/testing/": "E2E 테스트 + A/B 변형 생성",
-    "src/analytics/": "YouTube Analytics CTR 수집"
+    "docs/03-do/youtube-thumbnail/output/src/generator/": "NanoBanana Pro 이미지 생성 (api_client, prompt_builder, cli)",
+    "docs/03-do/youtube-thumbnail/output/src/youtube/": "YouTube API 연동 (auth, uploader, metadata, cli)",
+    "docs/03-do/youtube-thumbnail/output/src/validator/": "정책/품질 검증 (policy_checker, quality_checker, cli)",
+    "docs/03-do/youtube-thumbnail/output/src/testing/": "E2E 테스트 + A/B 변형 생성",
+    "docs/03-do/youtube-thumbnail/output/src/analytics/": "YouTube Analytics CTR 수집"
   },
   "pdca_cycle_summary": {
     "total_duration": "4 days (2026-03-25 to 2026-03-28)",

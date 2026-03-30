@@ -2,13 +2,14 @@ node_modules/
 *.log
 .env
 .env.*
-config/client_secret.json
-config/.youtube-token.json
-output/
 
 # Claude Code local settings
 .claude/settings.local.json
 
-# Cache & test output
+# Cache
 meta-pipe-cache/
-test-output/
+
+# Do 산출물 내 민감 파일/대용량
+docs/03-do/*/output/node_modules/
+docs/03-do/*/output/**/client_secret.json
+docs/03-do/*/output/**/.youtube-token.json

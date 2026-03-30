@@ -4,12 +4,12 @@
 
 ## 프로젝트 상태
 
-- **현재 단계**: Design + SKILL.md 구현 완료 → 테스트 대기
+- **현재 단계**: Design + SKILL.md 구현 완료, 2개 도메인 테스트 완료
 - **Plan 문서**: `docs/01-plan/features/domain-discovery-pipeline.plan.md` (v0.5)
 - **Design 문서**: `docs/02-design/features/domain-discovery-pipeline.design.md` (v0.1)
 - **SKILL.md**: `skills/meta-pipe/SKILL.md` + `references/` (v1.0)
-- **PoC 결과**: `examples/card-news/` (카드뉴스 자동화 도메인)
-- **다음 작업**: 5개 도메인 테스트 (Plan 10.4)
+- **Do 결과**: `docs/03-do/card-news/`, `docs/03-do/youtube-thumbnail/`
+- **다음 작업**: Harness 패턴 통합 (Phase B/C 확장), 추가 도메인 테스트
 
 ## 핵심 개념
 
@@ -33,6 +33,7 @@
 - **AWS AI-DLC** (가장 유사): 2-tier 규칙, Adaptive Depth, Extensions opt-in 패턴 적용
 - **DataFlow Agent**: 동적 파이프라인 조립 개념. 단, 데이터 처리 전용
 - **bkit**: hooks + context injection 메커니즘 참조. 단, 고정 9단계
+- **Harness** (revfactory/harness): 에이전트 팀 설계 + 스킬 생성 메타스킬. Phase C 분산 실행에 참조
 
 ## 강제 메커니즘 전략
 
@@ -44,18 +45,35 @@
 
 ```
 meta-pipe/
-├── CLAUDE.md                 # 이 파일
-├── docs/
-│   ├── 01-plan/features/     # PDCA Plan 문서 (v0.5)
-│   └── 02-design/features/   # PDCA Design 문서 (v0.1)
-├── skills/meta-pipe/
-│   ├── SKILL.md              # 메인 스킬 (Phase A/B/C)
-│   └── references/           # 지연 로딩 참조 문서
-│       ├── discovery.md      # Phase A 상세 가이드
-│       ├── pipeline-design.md # Phase B 상세 가이드
-│       └── execution.md      # Phase C 상세 가이드
-└── examples/
-    └── card-news/            # PoC: 카드뉴스 자동화 도메인
+├── CLAUDE.md                          # 이 파일
+├── .meta-pipe-status.json             # 실행 상태 추적
+│
+├── skills/meta-pipe/                  # [스킬 본체]
+│   ├── SKILL.md                       # 메인 스킬 (Phase A/B/C)
+│   └── references/                    # 지연 로딩 참조 문서
+│       ├── discovery.md               # Phase A 상세 가이드
+│       ├── pipeline-design.md         # Phase B 상세 가이드
+│       └── execution.md              # Phase C 상세 가이드
+│
+├── docs/                              # [PDCA 문서]
+│   ├── 01-plan/features/              # Plan 기획
+│   ├── 02-design/features/            # Design 설계
+│   ├── 03-do/                         # Do 실행 (도메인별 파이프라인 결과)
+│   │   ├── card-news/                 # 카드뉴스 도메인 테스트
+│   │   │   ├── domain-discovery.md    #   Phase A 결과
+│   │   │   ├── pipeline.md/json       #   Phase B 결과
+│   │   │   ├── steps/                 #   Phase C 각 단계 산출물
+│   │   │   └── output/               #   실제 생성물 (이미지 등)
+│   │   └── youtube-thumbnail/         # 유튜브 썸네일 도메인 테스트
+│   │       ├── domain-discovery.md
+│   │       ├── pipeline.md/json
+│   │       ├── steps/
+│   │       └── output/               #   실제 생성물 (src/, config/)
+│   ├── 04-analysis/features/          # Check 분석
+│   └── 05-report/features/            # Act 보고서
+│
+├── meta-pipe-cache/                   # 도메인 조사 캐시 (30일)
+└── meta-pipe-logs/                    # 실행 로그
 ```
 
 ## 작업 규칙
