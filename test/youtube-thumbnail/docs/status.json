@@ -1,0 +1,46 @@
+{
+  "pipeline": "youtube-thumbnail",
+  "level": "Dynamic",
+  "updated_at": "2026-04-01",
+  "current_phase": "Act",
+  "phases": {
+    "plan": {
+      "status": "completed",
+      "document": "test/youtube-thumbnail/docs/01-plan/youtube-thumbnail-automation.plan.md"
+    },
+    "design": {
+      "status": "completed",
+      "document": "test/youtube-thumbnail/docs/02-design/youtube-thumbnail-automation.design.md"
+    },
+    "do": {
+      "status": "completed",
+      "document": null,
+      "notes": "raw pipeline artifacts are stored under test/youtube-thumbnail/pipeline/"
+    },
+    "check": {
+      "status": "completed",
+      "document": "test/youtube-thumbnail/docs/04-check/youtube-thumbnail-automation.analysis.md",
+      "match_rate_initial": 85,
+      "match_rate_final": 91
+    },
+    "act": {
+      "status": "completed",
+      "document": "test/youtube-thumbnail/docs/05-act/youtube-thumbnail-automation.report.md"
+    }
+  },
+  "pipeline_artifacts": {
+    "root": "test/youtube-thumbnail/pipeline/",
+    "domain_discovery": "test/youtube-thumbnail/pipeline/domain-discovery.md",
+    "pipeline_md": "test/youtube-thumbnail/pipeline/pipeline.md",
+    "pipeline_json": "test/youtube-thumbnail/pipeline/pipeline.json",
+    "steps": [
+      "test/youtube-thumbnail/pipeline/steps/step-1-brand-definition.md",
+      "test/youtube-thumbnail/pipeline/steps/step-2-prompt-engineering.md",
+      "test/youtube-thumbnail/pipeline/steps/step-3-thumbnail-generation.md",
+      "test/youtube-thumbnail/pipeline/steps/step-4-youtube-api.md",
+      "test/youtube-thumbnail/pipeline/steps/step-5-policy-validation.md",
+      "test/youtube-thumbnail/pipeline/steps/step-6-testing-optimization.md"
+    ],
+    "output_root": "test/youtube-thumbnail/pipeline/output/"
+  }
+}

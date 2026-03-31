@@ -10,6 +10,6 @@ node_modules/
 meta-pipe-cache/
 
 # Do 산출물 내 민감 파일/대용량
-docs/03-do/*/output/node_modules/
-docs/03-do/*/output/**/client_secret.json
-docs/03-do/*/output/**/.youtube-token.json
+test/*/pipeline/output/node_modules/
+test/*/pipeline/output/**/client_secret.json
+test/*/pipeline/output/**/.youtube-token.json

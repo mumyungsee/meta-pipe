@@ -1,0 +1,43 @@
+{
+  "pipeline": "card-news",
+  "level": "PoC",
+  "updated_at": "2026-04-01",
+  "current_phase": "Plan",
+  "legacy_imported": true,
+  "notes": "Legacy raw artifacts, evaluation, and retrospective documents were imported into the new structure. The next active cycle should start from Plan.",
+  "phases": {
+    "plan": {
+      "status": "pending",
+      "document": null
+    },
+    "design": {
+      "status": "pending",
+      "document": null
+    },
+    "do": {
+      "status": "pending",
+      "document": null,
+      "notes": "Raw pipeline artifacts are stored under test/card-news/pipeline/ and can be reused in the next cycle."
+    },
+    "check": {
+      "status": "completed",
+      "document": "test/card-news/docs/04-check/evaluation.md",
+      "notes": "Imported from the legacy evaluation artifact."
+    },
+    "act": {
+      "status": "completed",
+      "documents": [
+        "test/card-news/docs/05-act/case-study-v2.md",
+        "test/card-news/docs/05-act/thread-post.md"
+      ],
+      "notes": "Imported legacy retrospective/report artifacts."
+    }
+  },
+  "pipeline_artifacts": {
+    "root": "test/card-news/pipeline/",
+    "domain_discovery": "test/card-news/pipeline/domain-discovery.md",
+    "pipeline_md": "test/card-news/pipeline/pipeline.md",
+    "pipeline_json": "test/card-news/pipeline/pipeline.json",
+    "output_root": "test/card-news/pipeline/output/"
+  }
+}
