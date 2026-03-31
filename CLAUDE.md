@@ -4,7 +4,13 @@
 
 ## 프로젝트 상태
 
-- 현재 단계: `meta-pipe` v1 문서/스킬 구현 완료, 테스트 파이프라인 2건 보관
+- 현재 단계: Cycle 1 `Act` 진행 중
+- meta-pipe 본체:
+  - Plan, Design, Do, Check 완료
+  - 다음 사이클 계획은 `docs/05-act/next-cycle/harness-integration.plan.md`에서 관리
+- 테스트 파이프라인:
+  - `youtube-thumbnail`: raw output + test docs 정리 완료
+  - `card-news`: legacy 산출물 이관 완료, 다음 사이클은 Plan부터 다시 시작
 - 최상위 PDCA: `docs/`
 - 실제 스킬 정본: `skills/meta-pipe/`
 - 테스트 파이프라인: `test/card-news/`, `test/youtube-thumbnail/`
@@ -76,5 +82,7 @@ meta-pipe/
 
 ## 다음 작업
 
-- Harness 패턴 통합은 `docs/05-act/next-cycle/harness-integration.plan.md`에서 이어간다.
-- 새 테스트 파이프라인은 항상 `test/{domain-slug}/pipeline/`에 만들고, 검증 문서는 `test/{domain-slug}/docs/`에 쌓는다.
+- 우선순위 1: meta-pipe에 인터뷰 단계/인터뷰 로직을 추가한다.
+- 우선순위 2: 인터뷰 기능 반영 내용을 `docs/01-plan`, `docs/02-design`, `docs/03-do`에 순차 반영한다.
+- 우선순위 3: 인터뷰가 반영된 meta-pipe로 새 테스트 파이프라인을 생성하고, 검증 문서는 `test/{domain-slug}/docs/`에 쌓는다.
+- Harness 패턴 통합은 인터뷰 기능 반영 이후 `docs/05-act/next-cycle/harness-integration.plan.md`에서 이어간다.
