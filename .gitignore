@@ -6,8 +6,9 @@ node_modules/
 # Claude Code local settings
 .claude/settings.local.json
 
-# Cache
-meta-pipe-cache/
+# Runtime
+runtime/cache/
+runtime/logs/
 
 # Do 산출물 내 민감 파일/대용량
 test/*/pipeline/output/node_modules/
