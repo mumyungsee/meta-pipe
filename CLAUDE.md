@@ -5,9 +5,11 @@
 ## 프로젝트 상태
 
 - 현재 버전: v2 (v1은 `archive/v1/`에 보존)
-- 현재 단계: v2 Plan 완료, Design 작성 대기
+- 현재 단계: v2 Design 완료, Do(구현) 대기
 - 아이데이션 기록: `docs/00-ideation/2026-04-01-v2-redesign.md`
+- Design 미결 사항 결정: `docs/00-ideation/2026-04-01-v2-design-decisions.md`
 - Plan 문서: `docs/01-plan/v2-plan.md`
+- Design 문서: `docs/02-design/v2-design.md`
 - GitHub Issues: 27개 생성 완료 (8개 Milestone)
 
 ## v2 핵심 개념
@@ -98,6 +100,6 @@ meta-pipe/
 
 ## 다음 작업
 
-- 우선순위 1: v2 Design 문서 작성 (`docs/02-design/`) — GitHub Issue #1, #2
-- 우선순위 2: v2 SKILL.md 구현 (`skills/meta-pipe/`) — Phase A부터 순차 (Issue #3~#7)
-- 우선순위 3: GitHub Project 보드 셋업 (권한 추가 필요: `gh auth refresh -s read:project -s project`)
+- 우선순위 1: v2 SKILL.md 구현 (`skills/meta-pipe/`) — Phase A부터 순차 (Issue #3~#7)
+  - `/pdca do v2-design --scope module-1`로 SKILL.md 기본 구조부터 시작
+- 우선순위 2: GitHub Project 보드 셋업 (권한 추가 필요: `gh auth refresh -s read:project -s project`)
