@@ -105,12 +105,12 @@ meta-pipe/
 | module-1 | SKILL.md 기본 구조 | 완료 | `skills/meta-pipe/SKILL.md` |
 | module-2 | Phase A (Consult) | 완료 | `skills/meta-pipe/references/consult.md` |
 | module-3 | Phase B (Discover) | 완료 | `references/discovery.md` |
-| module-4 | Phase C (Design Pipeline) | 대기 | `references/pipeline-design.md` |
+| module-4 | Phase C (Design Pipeline) | 완료 | `references/pipeline-design.md` |
 | module-5 | Phase D+E (Setup+Execute) | 대기 | `references/setup.md`, `execution.md` |
 | module-6 | Phase F (Evaluate) | 대기 | `references/evaluation.md` |
 | module-7 | 테스트 + 개선 | 대기 | end-to-end 검증 |
 
 ## 다음 작업
 
-- 우선순위 1: `/pdca do v2-design --scope module-3` — Phase B (Discover) 구현
+- 우선순위 1: `/pdca do v2-design --scope module-5` — Phase D+E (Setup+Execute) 구현
 - 우선순위 2: GitHub Project 보드 셋업 (권한 추가 필요: `gh auth refresh -s read:project -s project`)
