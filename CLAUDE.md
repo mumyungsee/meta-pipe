@@ -5,7 +5,7 @@
 ## 프로젝트 상태
 
 - 현재 버전: v2 (v1은 `archive/v1/`에 보존)
-- 현재 단계: v2 Design 완료, Do(구현) 대기
+- 현재 단계: v2 Do(구현) 진행 중 — module-1, module-2 완료
 - 아이데이션 기록: `docs/00-ideation/2026-04-01-v2-redesign.md`
 - Design 미결 사항 결정: `docs/00-ideation/2026-04-01-v2-design-decisions.md`
 - Plan 문서: `docs/01-plan/v2-plan.md`
@@ -98,8 +98,19 @@ meta-pipe/
 - Phase 순서: Consult(A) -> Discover(B) -> Design Pipeline(C) -> Setup(D) -> Execute(E) -> Evaluate(F)
 - 테스트 도메인: Plan 단계에서 결정
 
+## 구현 진행 상황
+
+| Module | Scope | 상태 | 산출물 |
+|--------|-------|------|--------|
+| module-1 | SKILL.md 기본 구조 | 완료 | `skills/meta-pipe/SKILL.md` |
+| module-2 | Phase A (Consult) | 완료 | `skills/meta-pipe/references/consult.md` |
+| module-3 | Phase B (Discover) | 대기 | `references/discovery.md` |
+| module-4 | Phase C (Design Pipeline) | 대기 | `references/pipeline-design.md` |
+| module-5 | Phase D+E (Setup+Execute) | 대기 | `references/setup.md`, `execution.md` |
+| module-6 | Phase F (Evaluate) | 대기 | `references/evaluation.md` |
+| module-7 | 테스트 + 개선 | 대기 | end-to-end 검증 |
+
 ## 다음 작업
 
-- 우선순위 1: v2 SKILL.md 구현 (`skills/meta-pipe/`) — Phase A부터 순차 (Issue #3~#7)
-  - `/pdca do v2-design --scope module-1`로 SKILL.md 기본 구조부터 시작
+- 우선순위 1: `/pdca do v2-design --scope module-3` — Phase B (Discover) 구현
 - 우선순위 2: GitHub Project 보드 셋업 (권한 추가 필요: `gh auth refresh -s read:project -s project`)
