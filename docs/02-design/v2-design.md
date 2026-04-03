@@ -40,8 +40,21 @@
 
 - **Phase 격리**: 각 Phase는 자기 reference만 로드. 이전 Phase는 summary로만 참조
 - **summary 체인**: 모든 산출물에 summary 필드 의무화. 다음 Phase의 최소 컨텍스트
-- **Adaptive Depth**: 도메인 복잡도에 따라 파이프라인 step 수 3~12단계 자동 조절
+- **Adaptive Depth**: 도메인 복잡도에 따라 파이프라인 step 수 3~12단계 자동 조절 (아래 기준표 참조)
 - **최소 필수 필드**: strict JSON Schema 대신 필수 필드 존재 여부만 검증
+
+### 1.3 Adaptive Depth 결정 기준
+
+Phase C에서 파이프라인 step 수를 결정할 때 다음 4가지 요인을 종합한다:
+
+| 요인 | 3~5단계 (Light) | 6~8단계 (Standard) | 9~12단계 (Full) |
+|------|:-:|:-:|:-:|
+| 도메인 워크플로우 수 (B의 workflows) | 1~2개 | 3~5개 | 6개+ |
+| required_tools 종류 수 | 0~1개 | 2~3개 | 4개+ |
+| execution_mode 혼합도 | 전부 동일 | 2종 혼합 | 3종 혼합 |
+| quality_expectation (A의 consult-result) | low/medium | medium/high | high |
+
+요인이 서로 다른 레벨을 가리킬 경우, **가장 높은 레벨을 채택**한다. 예: 워크플로우 2개(Light)이지만 required_tools 4개(Full)이면 Full 기준으로 9~12단계.
 
 ---
 
@@ -269,7 +282,12 @@ F (Evaluate)
       "required_tools": [],
       "domain_warnings": ["채널이 없으면 신규 생성 필요"],
       "approval_required": true,
-      "depends_on": []
+      "depends_on": [],
+      "execution": {
+        "pattern": "pipeline",
+        "agent_type": "conversational",
+        "delegation": "Task"
+      }
     }
   ],
   "setup_requirements": [
@@ -283,6 +301,14 @@ F (Evaluate)
 ```
 
 **필수 필드**: meta, steps[] (각 step: id, name, execution_mode, required_tools), setup_requirements[]
+
+**Optional 필드**: steps[].execution — Phase C가 에이전트 할당을 확정할 수 있으면 포함. 없으면 Phase E의 references/execution.md가 런타임에 결정 (fallback).
+
+| execution 필드 | 설명 | 값 예시 |
+|---------------|------|--------|
+| pattern | Harness 6패턴 중 하나 | pipeline, fan-out, expert-pool, producer-reviewer, supervisor, hierarchical |
+| agent_type | 에이전트 유형 | tool-caller, conversational, researcher |
+| delegation | bkit 호출 방식 | Task (bkit Task()), Agent (Claude Agent()) |
 
 ### 3.4 setup-result.json (Phase D 산출물)
 
@@ -652,6 +678,94 @@ step 실행 (execution_mode에 따라)
 | E | 중단 안 함 | 강등 체인으로 항상 진행 가능 |
 | F | 중단 안 함 | 3회 루프 후 사용자 판단 위임 |
 
+### 8.5 Phase F와 bkit 연동 범위
+
+bkit 도구(gap-detector, pdca-iterator, report-generator)와 Phase F의 역할은 **명확히 구분**한다:
+
+| 대상 | 도구 | 범위 |
+|------|------|------|
+| **meta-pipe 본체** (docs/ 하위) | bkit gap-detector, pdca-iterator | "Design 문서 vs 구현 코드" 검증. meta-pipe 자체의 PDCA |
+| **meta-pipe가 생성한 파이프라인** (test/ 하위) | Phase F evaluation.md 자체 로직 | "eval_criteria vs 산출물" 검수. 도메인별 평가 기준은 bkit이 알 수 없음 |
+
+Phase F는 자체 evaluation.md 로직으로 검수/개선 루프를 돌며, bkit 도구를 **직접 호출하지 않는다**. bkit 도구는 meta-pipe 스킬 자체를 개선할 때만 사용한다.
+
+### 8.6 실행 모드 업그레이드 (manual -> assist -> auto)
+
+> 강등(8.2절)이 실패 대응이라면, 업그레이드는 **사용자 성장 반영**이다. 반복할수록 자동화 수준이 올라간다.
+
+#### 업그레이드 설계 원칙
+
+| 항목 | 결정 |
+|------|------|
+| 업그레이드 단위 | **step별** (강등과 동일 단위) |
+| 트리거 시점 | **Phase C** (파이프라인 설계 시 이전 실행 이력 참조) |
+| 업그레이드 근거 | **실행 이력 + 프로필 변경** 둘 다 |
+| 사용자 확인 | **확인 후 업그레이드** (강등은 알림, 업그레이드는 제안) |
+
+#### 업그레이드 플로우
+
+```
+Phase C: 파이프라인 설계 시
+  |
+  v
+동일/유사 도메인의 이전 실행 이력 존재?
+  |
+  ├─ No  -> 기본 execution_mode 결정 (기존 로직)
+  |
+  ├─ Yes -> 이전 실행의 step별 결과 분석
+  |          |
+  |          ├─ 이전 manual step이 성공 완료됨?
+  |          |   -> assist 업그레이드 제안
+  |          |      "이전에 '{step_name}'을 직접 성공하셨습니다. 반자동으로 해볼까요?"
+  |          |
+  |          ├─ 이전 assist step이 수정 없이 승인됨?
+  |          |   -> auto 업그레이드 제안
+  |          |      "이전에 '{step_name}' AI 초안을 그대로 승인하셨습니다. 자동으로 할까요?"
+  |          |
+  |          └─ user-profile.json capabilities 변경됨?
+  |              -> 관련 step 업그레이드 후보 추가
+  |              예: docker: false -> true → setup step을 manual -> auto 제안
+  |
+  v
+사용자 승인 -> pipeline.json의 해당 step execution_mode 업그레이드
+사용자 거부 -> 이전과 동일한 execution_mode 유지
+```
+
+#### execution_history (user-profile.json 확장)
+
+업그레이드 판단을 위해 `user-profile.json`에 실행 이력을 축적한다:
+
+```json
+{
+  "updated_at": "2026-04-01",
+  "capabilities": { ... },
+  "tools": { ... },
+  "preferences": { ... },
+  "execution_history": [
+    {
+      "domain_slug": "youtube-thumbnail",
+      "completed_at": "2026-04-01",
+      "steps": [
+        { "id": "step-1", "original_mode": "manual", "final_mode": "manual", "success": true },
+        { "id": "step-3", "original_mode": "auto", "final_mode": "assist", "success": true, "degraded": true }
+      ]
+    }
+  ]
+}
+```
+
+| 필드 | 설명 |
+|------|------|
+| original_mode | Phase C가 설계한 최초 실행 모드 |
+| final_mode | 실제 실행된 모드 (강등 반영) |
+| success | step 완료 여부 |
+| degraded | 강등 발생 여부 |
+
+**업그레이드 규칙**:
+- `success: true` + `final_mode == original_mode` (강등 없이 성공) -> 한 단계 업그레이드 후보
+- `success: true` + `degraded: true` (강등 후 성공) -> 업그레이드하지 않음 (강등이 필요했으므로)
+- 동일 도메인 2회 이상 성공 시에만 업그레이드 제안 (1회 성공은 우연일 수 있음)
+
 ---
 
 ## 9. 사용자 인터랙션 포인트
@@ -716,8 +830,27 @@ meta-pipe는 웹 서비스가 아니므로 일반적인 웹 보안(XSS, CSRF 등
 | 5 | 캐시 미스 (경로 변경) | 캐시 무효화 | 다른 경로 선택 시 재조사 |
 | 6 | 강등 체인 | 에러 처리 | auto -> assist 강등 후 정상 진행 |
 | 7 | 프로필 갱신 | 사용자 프로필 | 2회차 실행 시 프로필 로드 + 변경분만 갱신 |
+| 8 | 업그레이드 제안 | 실행 모드 업그레이드 | 2회차 실행 시 성공 이력 기반 upgrade 제안 |
 
-### 11.3 v1 vs v2 비교 포인트 (유튜브 섬네일)
+### 11.3 Skill Evals 도입 (Module 7)
+
+Module 7(테스트 + 개선) 단계에서 Claude Code의 **Skill Evals** 프레임워크를 도입하여 회귀 테스트를 자동화한다.
+
+**도입 시기**: Module 1~6 구현 완료 후, end-to-end 테스트 시점
+
+**평가 세트 구성**:
+
+| Eval | 입력 | 기대 출력 | 검증 대상 |
+|------|------|----------|----------|
+| consult-basic | "유튜브 섬네일 만들고 싶어" | consult-result.json 필수 필드 존재 | Phase A |
+| discovery-cache | 동일 도메인 2회차 실행 | Phase B 캐시 히트 + 건너뛰기 | Phase B + 캐시 |
+| pipeline-adaptive | Light 도메인 입력 | steps 3~5개 + Phase D 생략 | Phase C Adaptive Depth |
+| degradation-chain | auto step 강제 실패 | assist로 강등 + 정상 진행 | Phase E 에러 처리 |
+| upgrade-suggest | 2회차 + 이전 manual 성공 이력 | assist 업그레이드 제안 | 실행 모드 업그레이드 |
+
+**bkit 통합 시**: `evals/` 디렉토리에 meta-pipe 평가 세트를 등록하여 스킬 변경 시 자동 회귀 검증.
+
+### 11.4 v1 vs v2 비교 포인트 (유튜브 섬네일)
 
 | 항목 | v1 | v2 기대 |
 |------|------|--------|
@@ -804,10 +937,10 @@ meta-pipe/
 | SKILL.md 기본 구조 | `module-1` | 오케스트레이터, 상태 관리, 세션 재개 | 30-40 |
 | Phase A (Consult) | `module-2` | 요구사항 수집, 프로필, Feasibility Research, 경로 제안 | 40-50 |
 | Phase B (Discover) | `module-3` | 5카테고리 조사, 캐시 연동, 품질 평가 | 30-40 |
-| Phase C (Design Pipeline) | `module-4` | Step 도출, 실행 모드 태깅, 도구 매핑 | 30-40 |
+| Phase C (Design Pipeline) | `module-4` | Step 도출, 실행 모드 태깅, 도구 매핑, **업그레이드 로직** | 30-40 |
 | Phase D+E (Setup+Execute) | `module-5` | 도구 세팅, 에이전트 실행, 강등 체인 | 50-60 |
-| Phase F (Evaluate) | `module-6` | 검수, 개선 루프, bkit 연동 | 30-40 |
-| 테스트 + 개선 | `module-7` | 2개 도메인 end-to-end + Gap Analysis | 40-50 |
+| Phase F (Evaluate) | `module-6` | 검수, 개선 루프, **execution_history 기록** | 30-40 |
+| 테스트 + 개선 | `module-7` | 2개 도메인 end-to-end + Gap Analysis + **Skill Evals** | 40-50 |
 
 #### Recommended Session Plan
 
@@ -828,3 +961,4 @@ meta-pipe/
 | Version | Date | Changes | Author |
 |---------|------|---------|--------|
 | 0.1 | 2026-04-03 | Initial draft — 7개 결정 사항 반영 | mumusee00 |
+| 0.2 | 2026-04-03 | pipeline.json execution optional 섹션, Adaptive Depth 기준, Phase F bkit 연동 범위, 실행 모드 업그레이드 메커니즘, Skill Evals 도입 명시 | mumusee00 |

@@ -307,6 +307,150 @@ Phase E 특수 사항: 개별 step 실행 시 pipeline.json 전체가 아니라 
 
 ---
 
+## 결정 8: pipeline.json execution 섹션 — Optional + Fallback 구조
+
+### 논의 과정
+
+결정 1(bkit 방식 채택)에서 "pipeline.json에 execution 섹션 추가"를 언급했으나, 두 가지 접근이 가능했다:
+
+- **Option A (pipeline.json에 명시)**: Phase C가 step마다 `execution: { pattern, agent_type, delegation }` 필드를 설계 시 포함. 재현성 높고 bkit 통합 시 구조 명확.
+- **Option B (execution.md에서 런타임 결정)**: Phase E가 required_tools와 execution_mode를 보고 그 자리에서 에이전트 구성 결정. 유연하지만 디버깅 어려움.
+
+**bkit 통합 목표** 관점에서 Option A가 유리하다 — pipeline.json만 보면 실행 방식까지 파악 가능. 단, 도메인마다 적절한 패턴이 달라 Phase C에서 항상 확정하기 어려우므로 **optional + fallback** 구조를 채택.
+
+### 결정
+
+**execution 섹션은 optional 필드. Phase C가 확정 가능하면 포함, 없으면 references/execution.md가 런타임에 결정 (fallback).**
+
+```json
+// step 내 optional execution 섹션
+{
+  "id": "step-3",
+  "execution_mode": "auto",
+  "required_tools": ["dalle_api"],
+  "execution": {                    // optional
+    "pattern": "pipeline",          // Harness 6패턴: pipeline/fan-out/expert-pool/producer-reviewer/supervisor/hierarchical
+    "agent_type": "tool-caller",    // conversational / tool-caller / researcher
+    "delegation": "Task"            // Task (bkit Task()) vs Agent (Claude Agent())
+  }
+}
+```
+
+### 영향
+
+- Phase C의 references/pipeline-design.md에 "execution 섹션 작성 가이드" 포함
+- Phase E의 references/execution.md에 "execution 섹션 없을 때 fallback 결정 로직" 포함
+- bkit 통합 시 pipeline.json의 execution 섹션을 그대로 읽어 Task() 호출 가능
+
+---
+
+## 결정 9: Phase C Adaptive Depth 결정 기준
+
+### 논의 과정
+
+Plan 3.3절 C1에서 "Adaptive Depth: 3~12단계"라고 명시했으나, 구체적인 결정 기준이 없었다. "도메인 복잡도에 따라"라는 설명만으로는 Phase C 구현 시 기준이 불명확하다.
+
+Discovery(Phase B) 산출물에서 추출 가능한 정량적 요인으로 기준을 수립한다.
+
+### 결정
+
+**4가지 요인으로 step 수 범위 결정. 요인이 서로 다른 레벨을 가리킬 경우 가장 높은 레벨 채택.**
+
+| 요인 | 3~5단계 (Light) | 6~8단계 (Standard) | 9~12단계 (Full) |
+|------|:-:|:-:|:-:|
+| 도메인 워크플로우 수 (B의 workflows) | 1~2개 | 3~5개 | 6개+ |
+| required_tools 종류 수 | 0~1개 | 2~3개 | 4개+ |
+| execution_mode 혼합도 | 전부 동일 | 2종 혼합 | 3종 혼합 |
+| quality_expectation (A의 consult-result) | low/medium | medium/high | high |
+
+예: 워크플로우 2개(Light)이지만 required_tools 4개(Full) → Full 기준으로 9~12단계.
+
+### 영향
+
+- references/pipeline-design.md에 Adaptive Depth 결정 기준표 포함
+- Phase C 구현 시 B의 discovery.json을 파싱하여 4가지 요인 추출 후 step 수 결정
+
+---
+
+## 결정 10: Phase F와 bkit 연동 범위 명확화
+
+### 논의 과정
+
+결정 1에서 "Phase F = bkit의 PDCA Check-Act 재활용 (gap-detector, pdca-iterator)"이라고 했으나, 이 표현이 모호했다.
+
+**meta-pipe에는 두 가지 평가 대상이 존재한다:**
+
+1. **meta-pipe 본체** (docs/ 하위): meta-pipe 스킬 자체의 품질 → bkit gap-detector로 "Design 문서 vs 구현 코드" 검증
+2. **meta-pipe가 생성한 파이프라인** (test/ 하위): 도메인별 eval_criteria 대비 산출물 검수 → Phase F 자체 로직
+
+도메인별 평가 기준(eval_criteria)은 bkit이 알 수 없으므로, Phase F가 bkit 도구를 직접 호출하는 것은 부적합하다.
+
+### 결정
+
+**Phase F는 자체 evaluation.md 로직으로 검수/개선 루프를 돈다. bkit 도구(gap-detector, pdca-iterator)는 meta-pipe 스킬 자체를 개선할 때만 사용한다.**
+
+| 대상 | 도구 | 범위 |
+|------|------|------|
+| meta-pipe 본체 (docs/) | bkit gap-detector, pdca-iterator | Design vs 코드 검증. meta-pipe 자체의 PDCA |
+| 생성된 파이프라인 (test/) | Phase F evaluation.md 자체 로직 | eval_criteria vs 산출물 검수 |
+
+### 영향
+
+- references/evaluation.md는 bkit 도구를 호출하지 않고 자체 평가 루프 구현
+- meta-pipe 본체의 PDCA (docs/ 하위)는 별도로 bkit PDCA로 관리
+
+---
+
+## 결정 11: 실행 모드 업그레이드 메커니즘 (manual -> assist -> auto)
+
+### 논의 과정
+
+v2 Design에 강등(auto→manual) 체인은 설계되었으나, 반대 방향인 업그레이드(manual→auto)가 없었다. meta-pipe의 핵심 가치 중 하나가 "반복할수록 자동화 수준이 올라가는 것"이라면, 이 메커니즘이 필요하다.
+
+사용자의 세팅 능력/기술이 발전하면 이전에 manual이었던 step을 assist, 나아가 auto로 올릴 수 있어야 한다.
+
+### 결정
+
+**Phase C에서 이전 실행 이력 + 프로필 변경을 종합하여 업그레이드를 "제안"한다. 사용자 확인 후 적용.**
+
+| 항목 | 결정 |
+|------|------|
+| 업그레이드 단위 | step별 (강등과 동일 단위) |
+| 트리거 시점 | Phase C (파이프라인 설계 시) |
+| 업그레이드 근거 | 실행 이력 + 프로필 변경 둘 다 |
+| 사용자 확인 | 확인 후 업그레이드 (강등은 알림, 업그레이드는 제안) |
+
+**업그레이드 규칙:**
+- `success: true` + 강등 없이 성공 → 한 단계 업그레이드 후보
+- `success: true` + 강등 후 성공 → 업그레이드 안 함 (강등이 필요했으므로)
+- 동일 도메인 2회 이상 성공 시에만 제안 (1회는 우연일 수 있음)
+
+**execution_history 필드를 user-profile.json에 추가:**
+
+```json
+{
+  "execution_history": [
+    {
+      "domain_slug": "youtube-thumbnail",
+      "completed_at": "2026-04-01",
+      "steps": [
+        { "id": "step-1", "original_mode": "manual", "final_mode": "manual", "success": true },
+        { "id": "step-3", "original_mode": "auto", "final_mode": "assist", "success": true, "degraded": true }
+      ]
+    }
+  ]
+}
+```
+
+### 영향
+
+- user-profile.json 스키마에 `execution_history[]` 추가 (결정 4 확장)
+- Phase C의 references/pipeline-design.md에 "업그레이드 후보 검출 + 제안" 로직 포함
+- Phase F 완료 시 execution_history 기록 (references/evaluation.md에서 처리)
+- Module 4(Phase C)와 Module 6(Phase F) 구현 시 반영 필요
+
+---
+
 ## 비교 분석 참조 자료
 
 - bkit 레포: https://github.com/popup-studio-ai/bkit-claude-code
