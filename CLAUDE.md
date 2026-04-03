@@ -104,7 +104,7 @@ meta-pipe/
 |--------|-------|------|--------|
 | module-1 | SKILL.md 기본 구조 | 완료 | `skills/meta-pipe/SKILL.md` |
 | module-2 | Phase A (Consult) | 완료 | `skills/meta-pipe/references/consult.md` |
-| module-3 | Phase B (Discover) | 대기 | `references/discovery.md` |
+| module-3 | Phase B (Discover) | 완료 | `references/discovery.md` |
 | module-4 | Phase C (Design Pipeline) | 대기 | `references/pipeline-design.md` |
 | module-5 | Phase D+E (Setup+Execute) | 대기 | `references/setup.md`, `execution.md` |
 | module-6 | Phase F (Evaluate) | 대기 | `references/evaluation.md` |
