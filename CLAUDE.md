@@ -9,6 +9,14 @@
 - Plan 문서: `docs/01-plan/` (작성 예정)
 - Design 문서: `docs/02-design/` (작성 예정)
 
+## 버전 히스토리 참조
+
+| 버전 | 핵심 교훈 | 참조 문서 |
+|------|----------|----------|
+| v1 | 사용자 맥락 없이 파이프라인 생성 → 실행 불가 | `archive/v1/README.md` |
+| v2 | Phase별 테스트 없이 전체 구현 → Phase A 결함이 전체 흔들림 | `archive/v2/docs/00-ideation/` |
+| v2→v3 | 왜 v3인지, 무엇을 carry over했는지 | `docs/00-ideation/2026-04-07-v3-kickoff.md` |
+
 ## v3 핵심 가설
 
 > 인터뷰를 제대로 하면, 도메인 모르는 사용자가 납득하고 선택할 수 있는 파이프라인이 나오는가
