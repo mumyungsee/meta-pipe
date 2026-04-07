@@ -89,7 +89,17 @@ meta-pipe/
 | module-5 | Phase E (Execute) | 대기 | `references/execution.md` |
 | module-6 | 테스트 + 개선 | 대기 | end-to-end 검증 |
 
+## 개발 방법론 (v3부터 적용)
+
+- **Phase별 PDCA**: 각 Phase 구현 후 테스트 통과해야 다음 Phase 시작
+- **테스트 방법**: 실제 테스트 도메인으로 `/meta-pipe` 직접 실행 + 사람이 결과 판단
+- **작은 단위**: 바이브코딩은 단위를 작게 잘라서 구현 + 테스트 반복
+- **Plan에 테스트 기준 포함**: Phase마다 "완료 기준 + 테스트 방법" 명시
+
 ## 다음 작업
 
 - 우선순위 1: v3 Plan 문서 작성 (`docs/01-plan/`)
+  - Phase A, B, C, E 스코프 + 각 Phase별 완료 기준 + 테스트 방법 포함
+  - 테스트 도메인 Plan 단계에서 확정
 - 우선순위 2: v3 Design 문서 작성 (`docs/02-design/`)
+- 우선순위 3: references/ 재작성 (Phase A부터, 테스트 통과 후 다음으로)
