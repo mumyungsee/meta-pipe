@@ -5,10 +5,10 @@
 ## 프로젝트 상태
 
 - 현재 버전: v3 (v1, v2는 `archive/`에 보존)
-- 현재 단계: **Plan + Design 완료, 구현 시작 예정**
+- 현재 단계: **module-2 테스트 완료 (T-01 Pass), module-3 구현 대기**
 - 핵심 변경: "처음부터 생성" → "검증된 사례 검색 + 적용"
-- Plan 문서: `docs/01-plan/` (작성 예정)
-- Design 문서: `docs/02-design/` (작성 예정)
+- Plan 문서: `docs/01-plan/features/meta-pipe-v3.plan.md`
+- Design 문서: `docs/02-design/features/meta-pipe-v3.design.md`
 
 ## 버전 히스토리 참조
 
@@ -47,9 +47,17 @@ Step별 실행 모드:
 
 - `docs/`
   - `meta-pipe` 자체를 개선하는 문서만 둔다.
-  - `00-ideation` 아이데이션/회의록, `01-plan` 기획, `02-design` 설계, `03-do` 구현 추적, `04-check` 갭 분석, `05-act` 회고/다음 사이클을 관리한다.
+  - `00-ideation` 아이데이션/회의록, `01-plan` 전체 기획, `02-design` 전체 설계를 관리한다.
+  - `03-do` 구현 추적 — **모듈별 폴더**에서 자체 mini-PDCA 사이클을 돌린다.
+  - `04-check`, `05-act`는 프로젝트 전체 레벨 회고용.
+- `docs/03-do/{module명}/`
+  - 각 모듈의 plan.md, analysis.md, report.md 등 문서를 관리한다.
+  - 스킬 파일(SKILL.md, references/*.md)은 실행 위치(`skills/meta-pipe/`)에 두고, 문서만 여기에 넣는다.
+  - 예: `docs/03-do/module-2-phase-a/plan.md`, `docs/03-do/module-2-phase-a/analysis.md`
 - `skills/meta-pipe/`
   - 실제 실행되는 `SKILL.md`와 `references/` 정본 위치다.
+- `.claude/skills/meta-pipe/`
+  - CC 스킬 등록용 wrapper (frontmatter 포함). `skills/meta-pipe/SKILL.md`를 참조.
 - `test/{slug}/pipeline/`
   - `meta-pipe`가 생성한 테스트 파이프라인 raw output을 둔다.
 - `test/{slug}/docs/`
@@ -62,20 +70,36 @@ Step별 실행 모드:
 ```text
 meta-pipe/
 ├── CLAUDE.md
+├── .claude/
+│   └── skills/
+│       └── meta-pipe/
+│           └── SKILL.md          # CC 스킬 등록 (frontmatter)
 ├── archive/
 │   ├── v1/
 │   └── v2/
 ├── docs/
 │   ├── 00-ideation/
 │   ├── 01-plan/
+│   │   └── features/
+│   │       └── meta-pipe-v3.plan.md
 │   ├── 02-design/
-│   ├── 03-do/
+│   │   └── features/
+│   │       └── meta-pipe-v3.design.md
+│   ├── 03-do/                    # 모듈별 mini-PDCA
+│   │   └── module-2-phase-a/
+│   │       ├── plan.md
+│   │       └── analysis.md
 │   ├── 04-check/
 │   └── 05-act/
 ├── skills/
 │   └── meta-pipe/
+│       ├── SKILL.md              # 오케스트레이터 (실행 정본)
 │       └── references/
-└── test/
+│           └── consult.md        # Phase A
+├── test/
+│   └── lecture-wiki-automation/  # T-01 테스트 산출물
+│       └── pipeline/
+│           └── consult.json
 ```
 
 ## 문서 운영 규칙
@@ -105,10 +129,10 @@ meta-pipe/
 | Module | Scope | 상태 | 산출물 |
 |--------|-------|------|--------|
 | module-1 | SKILL.md 기본 구조 | ✅ 완료 | `skills/meta-pipe/SKILL.md` |
-| module-2 | Phase A (Consult) | 🧪 테스트 대기 | `references/consult.md` |
+| module-2 | Phase A (Consult) | ✅ 테스트 통과 (T-01) | `references/consult.md` |
 | module-3 | Phase B (Search) | 대기 | `references/search.md` |
 | module-4 | Phase C (Adapt) | 대기 | `references/adapt.md` |
-| module-5 | Phase E (Execute) | 대기 | `references/execution.md` |
+| module-5 | Phase E (Execute) | 대기 | `references/execute.md` |
 | module-6 | 테스트 + 개선 | 대기 | end-to-end 검증 |
 
 ## 개발 방법론 (v3부터 적용)
@@ -124,7 +148,8 @@ meta-pipe/
 - ~~우선순위 1: v3 Design 문서 작성~~ ✅ 완료 (`docs/02-design/features/meta-pipe-v3.design.md`)
 - ~~module-1: SKILL.md 오케스트레이터~~ ✅ 완료
 - ~~module-2: consult.md 구현~~ ✅ 완료
-- **우선순위 1: module-2 테스트 (T-01)** — `/meta-pipe` 실행 → Phase A 동작 확인 → 테스트 통과 후 module-3
+- ~~module-2 테스트 (T-01)~~ ✅ 통과 — Phase A 동작 확인, consult.json 스키마 100% 일치
+- **우선순위 1: module-3 구현 (Phase B: Search)** — `docs/03-do/module-3-phase-b/` 에서 PDCA
 - 우선순위 3: meta-pipe 자체를 만드는 과정이 첫 번째 테스트 케이스
 
 ## 주의 사항

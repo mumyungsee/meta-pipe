@@ -1,0 +1,13 @@
+{
+  "goal": "주제를 입력하면 강의록을 위키로 만들어주는 자동화. 안드레 카파시가 만든 오픈소스 위키 프로젝트를 활용하고 싶음. 마크다운 링크가 연결된 위키 문서를 만들고, 추후 위키 UI를 씌울 예정.",
+  "goal_refined": "Andrej Karpathy의 오픈소스 위키 프로젝트를 활용하여 주제 입력 → 강의록 위키 자동 생성",
+  "constraints": {
+    "stack": ["Claude Code", "Antigravity", "Node.js", "Python"],
+    "tools": ["Claude Code", "Antigravity"],
+    "capabilities": "beginner",
+    "budget": "무료 도구만 (유료 API 제외)",
+    "excluded": ["유료 API"]
+  },
+  "deliverable": "Andrej Karpathy 스타일 오픈소스 위키 (마크다운 링크 연결된 위키 문서, 추후 위키 UI 적용)",
+  "search_keywords": ["Karpathy wiki github", "Andrej Karpathy open source wiki", "lecture wiki markdown automation"]
+}
