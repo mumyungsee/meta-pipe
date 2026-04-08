@@ -1,0 +1,72 @@
+{
+  "queries": [
+    {
+      "site": "github.com",
+      "query": "site:github.com Andrej Karpathy wiki open source markdown",
+      "results_count": 10
+    },
+    {
+      "site": "threads.net",
+      "query": "site:threads.net Karpathy wiki automation lecture",
+      "results_count": 0
+    },
+    {
+      "site": "gpters.org",
+      "query": "site:gpters.org Karpathy wiki 강의 자동화",
+      "results_count": 0
+    }
+  ],
+  "results": [
+    {
+      "id": 1,
+      "source": "github.com",
+      "url": "https://github.com/xoai/sage-wiki",
+      "title": "sage-wiki — LLM-compiled personal knowledge base with web UI",
+      "summary": "Karpathy LLM Wiki 패턴 구현체. Go 싱글 바이너리로 마크다운 위키를 Wikipedia 스타일 웹 UI로 렌더링. wikilinks 클릭, 목차 자동생성, 인터랙티브 지식 그래프, 하이브리드 검색(BM25+벡터) 지원. Preact + Tailwind CSS.",
+      "relevance": "high",
+      "match_reason": "Wikipedia 스타일 UI + 싱글 바이너리 간편 실행 + DB 불필요 + 무료 오픈소스"
+    },
+    {
+      "id": 2,
+      "source": "github.com",
+      "url": "https://github.com/Ar9av/obsidian-wiki",
+      "title": "obsidian-wiki — AI agent framework for Obsidian wiki",
+      "summary": "Karpathy LLM Wiki 패턴 기반 Obsidian 위키 프레임워크. Python + 마크다운으로 문서를 자동 위키화. Claude Code 포함 다양한 AI 에이전트 지원. setup.sh 한 줄로 설치.",
+      "relevance": "high",
+      "match_reason": "Claude Code 호환 + Python 기반 + beginner 친화적 설치 + 스타 206개"
+    },
+    {
+      "id": 3,
+      "source": "github.com",
+      "url": "https://github.com/toolboxmd/karpathy-wiki",
+      "title": "karpathy-wiki — Claude Code skills plugin",
+      "summary": "Claude Code 스킬 플러그인으로 마크다운 위키를 점진적으로 구축. Shell 기반, hooks.json으로 자동 트리거. 가장 가볍고 Claude Code에 바로 통합 가능.",
+      "relevance": "high",
+      "match_reason": "Claude Code 네이티브 스킬 + 가장 가벼운 구현"
+    },
+    {
+      "id": 4,
+      "source": "github.com",
+      "url": "https://github.com/lucasastorian/llmwiki",
+      "title": "llmwiki — Open Source LLM Wiki web app",
+      "summary": "Karpathy LLM Wiki 오픈소스 풀스택 웹앱. Next.js + FastAPI + Supabase. 문서 업로드 → Claude MCP로 위키 자동 작성. Apache 2.0.",
+      "relevance": "medium",
+      "match_reason": "풀스택 웹앱이라 Supabase/FastAPI 세팅 필요 → beginner에게 복잡"
+    },
+    {
+      "id": 5,
+      "source": "github.com",
+      "url": "https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f",
+      "title": "Karpathy 원본 LLM Wiki Gist",
+      "summary": "Karpathy가 직접 작성한 LLM Wiki 개념 원문. 모든 구현체의 원본 참조. Obsidian을 뷰어로, LLM을 작성자로 사용하는 패턴 정의.",
+      "relevance": "high",
+      "match_reason": "개념 이해 필수 원문 (실행 코드는 아님)"
+    }
+  ],
+  "selected": {
+    "id": 1,
+    "url": "https://github.com/xoai/sage-wiki",
+    "reason": "Wikipedia 스타일 웹 UI를 간편하게 구현한 점이 사용자 요구와 일치. Go 싱글 바이너리로 DB 없이 실행 가능. beginner에게 적합.",
+    "feasibility": "pass"
+  }
+}

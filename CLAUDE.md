@@ -5,7 +5,7 @@
 ## 프로젝트 상태
 
 - 현재 버전: v3 (v1, v2는 `archive/`에 보존)
-- 현재 단계: **module-3 구현 완료 (search.md), T-02 테스트 대기**
+- 현재 단계: **module-3 테스트 통과 (T-02, T-03), Gap 분석 대기**
 - 핵심 변경: "처음부터 생성" → "검증된 사례 검색 + 적용"
 - Plan 문서: `docs/01-plan/features/meta-pipe-v3.plan.md`
 - Design 문서: `docs/02-design/features/meta-pipe-v3.design.md`
@@ -100,9 +100,10 @@ meta-pipe/
 │           ├── consult.md        # Phase A
 │           └── search.md         # Phase B
 ├── test/
-│   └── lecture-wiki-automation/  # T-01 테스트 산출물
+│   └── lecture-wiki-automation/  # T-01, T-02 테스트 산출물
 │       └── pipeline/
-│           └── consult.json
+│           ├── consult.json
+│           └── search-results.json
 ```
 
 ## 문서 운영 규칙
@@ -133,7 +134,7 @@ meta-pipe/
 |--------|-------|------|--------|
 | module-1 | SKILL.md 기본 구조 | ✅ 완료 | `skills/meta-pipe/SKILL.md` |
 | module-2 | Phase A (Consult) | ✅ 테스트 통과 (T-01) | `references/consult.md` |
-| module-3 | Phase B (Search) | ✅ 구현 완료, T-02 테스트 대기 | `references/search.md` |
+| module-3 | Phase B (Search) | ✅ 테스트 통과 (T-02, T-03) | `references/search.md` |
 | module-4 | Phase C (Adapt) | 대기 | `references/adapt.md` |
 | module-5 | Phase E (Execute) | 대기 | `references/execute.md` |
 | module-6 | 테스트 + 개선 | 대기 | end-to-end 검증 |
@@ -154,10 +155,10 @@ meta-pipe/
 - ~~module-2 테스트 (T-01)~~ ✅ 통과 — Phase A 동작 확인, consult.json 스키마 100% 일치
 - ~~module-3 Plan~~ ✅ 완료 (`docs/03-do/module-3-phase-b/plan.md`)
 - ~~module-3 구현~~ ✅ 완료 (`references/search.md`)
-- **우선순위 1: module-3 테스트 (T-02, T-03)** — 기존 consult.json으로 Phase B 실행
-- 우선순위 2: module-3 Gap 분석 → `docs/03-do/module-3-phase-b/analysis.md`
-- 우선순위 3: module-4 (Phase C: Adapt)
-- 우선순위 4: meta-pipe 자체를 만드는 과정이 첫 번째 테스트 케이스
+- ~~module-3 테스트 (T-02, T-03)~~ ✅ 통과 — 3사이트 검색 + sage-wiki 선택 + B→C 게이트 pass
+- **우선순위 1: module-3 Gap 분석** → `docs/03-do/module-3-phase-b/analysis.md`
+- 우선순위 2: module-4 (Phase C: Adapt) — sage-wiki를 강의 위키에 맞게 적용
+- 우선순위 3: meta-pipe 자체를 만드는 과정이 첫 번째 테스트 케이스
 
 ## 주의 사항
 
