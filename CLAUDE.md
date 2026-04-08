@@ -1,11 +1,12 @@
 # meta-pipe
 
-> 도메인 지식이 없어도 AI가 컨설팅하고, 적절한 도구를 찾고, 실행 가능한 파이프라인을 설계하고, 결과를 검수/개선하는 루프까지 돌려주는 메타 파이프라인 프로젝트
+> 도메인 지식이 없어도 AI가 검증된 사례를 찾아서 사용자 상황에 맞게 적용하고, PDCA 사이클로 검증/개선하는 메타 파이프라인 프로젝트. bkit 플러그인으로 통합 목표.
 
 ## 프로젝트 상태
 
 - 현재 버전: v3 (v1, v2는 `archive/`에 보존)
-- 현재 단계: v3 설계 시작
+- 현재 단계: **Plan 완료, Design 작성 예정**
+- 핵심 변경: "처음부터 생성" → "검증된 사례 검색 + 적용"
 - Plan 문서: `docs/01-plan/` (작성 예정)
 - Design 문서: `docs/02-design/` (작성 예정)
 
@@ -16,19 +17,25 @@
 | v1 | 사용자 맥락 없이 파이프라인 생성 → 실행 불가 | `archive/v1/README.md` |
 | v2 | Phase별 테스트 없이 전체 구현 → Phase A 결함이 전체 흔들림 | `archive/v2/docs/00-ideation/` |
 | v2→v3 | 왜 v3인지, 무엇을 carry over했는지 | `docs/00-ideation/2026-04-07-v3-kickoff.md` |
+| v3 피봇 | "처음부터 생성" → "사례 기반 검색+적용"으로 전환 | `docs/00-ideation/2026-04-08-v3-pivot-to-case-based.md` |
 
 ## v3 핵심 가설
 
-> 인터뷰를 제대로 하면, 도메인 모르는 사용자가 납득하고 선택할 수 있는 파이프라인이 나오는가
+> 검증된 사례를 잘 찾아서 사용자 상황에 맞게 적용하면, 도메인 모르는 사용자도 결과를 예측하고 납득한 뒤 실행할 수 있는가
 
 ## v3 핵심 개념
 
 ```text
 입력: "X를 만들고 싶어"
-  -> Phase A: Consult  (목표 + 결과물 형태 수집 + 결과물 예시 포함한 경로 제안)
-  -> Phase B: Discover (도메인 조사 — 컨설팅 결과 반영)
-  -> Phase C: Design   (파이프라인 설계 — step별 실행 모드 태깅)
+  -> Phase A: Consult  (목표 + 제약 조건 + 결과물 형태 수집)
+  -> Phase B: Search   (지정 사이트에서 검증된 사례 검색 + 결과 예시 제시)
+  -> Phase C: Adapt    (선택한 사례를 내 상황에 맞게 수정/파이프라인화)
   -> Phase E: Execute  (실행)
+
+검색 소스 (site: 연산자):
+  - github.com    → 실행 가능한 코드/오픈소스 레포
+  - threads.net   → 실제 사용 후기/팁
+  - gpters.org    → 검증된 사례 + 실행 결과
 
 Step별 실행 모드:
   - auto:   AI가 자동 실행
@@ -82,8 +89,15 @@ meta-pipe/
 
 ## 결정 사항
 
-- 스코프: Phase A, B, C, E (Phase D, F는 가설 검증 후 추가)
-- Phase 순서: Consult(A) -> Discover(B) -> Design(C) -> Execute(E)
+> 상세 근거: `docs/00-ideation/2026-04-08-v3-pivot-to-case-based.md` 섹션 11 참조
+
+- **D1**: B안(사례 기반) 피봇 — 사용자 실제 행동 패턴과 일치
+- **D2**: Phase B = Search (사례 검색) — Discover에서 변경
+- **D3**: Phase C = Adapt (사례 적용) — Design에서 변경
+- **D4**: Phase A에 제약 조건 수집 추가 — 사례 라이브러리 충돌 방지
+- **D5**: v3 사용자 = 나 한 명 — 스코프 제한
+- **D6**: 사이트 지정 AI 검색 채택 — site: 연산자 활용
+- **D7**: 각 Phase 산출물은 반드시 문서(JSON/MD)로 남김 — 핵심 차별점
 - v3 제외 항목: 사용자 프로필, 캐시, 세션 재개, 강등/업그레이드, 복잡도 레벨 분기
 
 ## 구현 진행 상황
@@ -92,8 +106,8 @@ meta-pipe/
 |--------|-------|------|--------|
 | module-1 | SKILL.md 기본 구조 | 대기 | `skills/meta-pipe/SKILL.md` |
 | module-2 | Phase A (Consult) | 대기 | `references/consult.md` |
-| module-3 | Phase B (Discover) | 대기 | `references/discovery.md` |
-| module-4 | Phase C (Design) | 대기 | `references/pipeline-design.md` |
+| module-3 | Phase B (Search) | 대기 | `references/search.md` |
+| module-4 | Phase C (Adapt) | 대기 | `references/adapt.md` |
 | module-5 | Phase E (Execute) | 대기 | `references/execution.md` |
 | module-6 | 테스트 + 개선 | 대기 | end-to-end 검증 |
 
@@ -106,8 +120,13 @@ meta-pipe/
 
 ## 다음 작업
 
-- 우선순위 1: v3 Plan 문서 작성 (`docs/01-plan/`)
-  - Phase A, B, C, E 스코프 + 각 Phase별 완료 기준 + 테스트 방법 포함
-  - 테스트 도메인 Plan 단계에서 확정
-- 우선순위 2: v3 Design 문서 작성 (`docs/02-design/`)
-- 우선순위 3: references/ 재작성 (Phase A부터, 테스트 통과 후 다음으로)
+- ~~우선순위 1: v3 Plan 문서 작성~~ ✅ 완료 (`docs/01-plan/features/meta-pipe-v3.plan.md`)
+- **우선순위 1: v3 Design 문서 작성** (`/pdca design meta-pipe-v3`)
+- 우선순위 2: module-1(SKILL.md)부터 순차 구현 + 테스트 (v2 교훈 적용)
+- 우선순위 3: meta-pipe 자체를 만드는 과정이 첫 번째 테스트 케이스
+
+## 주의 사항
+
+- **반복 패턴 경고**: "만들어도 완성도 부족 → 버림 → 남이 만든 것 사용" 패턴 반복 위험
+- **대응**: 최소 사용 가능 버전 먼저 정의, 첫 테스트를 빨리 실행
+- **스코프 엄수**: v3 사용자는 "나" 한 명. 스터디/앰버서더/생태계는 v3 이후
