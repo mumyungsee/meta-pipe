@@ -5,7 +5,7 @@
 ## 프로젝트 상태
 
 - 현재 버전: v3 (v1, v2는 `archive/`에 보존)
-- 현재 단계: **Plan 완료, Design 작성 예정**
+- 현재 단계: **Plan + Design 완료, 구현 시작 예정**
 - 핵심 변경: "처음부터 생성" → "검증된 사례 검색 + 적용"
 - Plan 문서: `docs/01-plan/` (작성 예정)
 - Design 문서: `docs/02-design/` (작성 예정)
@@ -121,8 +121,8 @@ meta-pipe/
 ## 다음 작업
 
 - ~~우선순위 1: v3 Plan 문서 작성~~ ✅ 완료 (`docs/01-plan/features/meta-pipe-v3.plan.md`)
-- **우선순위 1: v3 Design 문서 작성** (`/pdca design meta-pipe-v3`)
-- 우선순위 2: module-1(SKILL.md)부터 순차 구현 + 테스트 (v2 교훈 적용)
+- ~~우선순위 1: v3 Design 문서 작성~~ ✅ 완료 (`docs/02-design/features/meta-pipe-v3.design.md`)
+- **우선순위 1: module-1(SKILL.md)부터 순차 구현 + 테스트** (v2 교훈 적용)
 - 우선순위 3: meta-pipe 자체를 만드는 과정이 첫 번째 테스트 케이스
 
 ## 주의 사항
