@@ -104,8 +104,8 @@ meta-pipe/
 
 | Module | Scope | 상태 | 산출물 |
 |--------|-------|------|--------|
-| module-1 | SKILL.md 기본 구조 | 대기 | `skills/meta-pipe/SKILL.md` |
-| module-2 | Phase A (Consult) | 대기 | `references/consult.md` |
+| module-1 | SKILL.md 기본 구조 | ✅ 완료 | `skills/meta-pipe/SKILL.md` |
+| module-2 | Phase A (Consult) | 🧪 테스트 대기 | `references/consult.md` |
 | module-3 | Phase B (Search) | 대기 | `references/search.md` |
 | module-4 | Phase C (Adapt) | 대기 | `references/adapt.md` |
 | module-5 | Phase E (Execute) | 대기 | `references/execution.md` |
@@ -122,7 +122,9 @@ meta-pipe/
 
 - ~~우선순위 1: v3 Plan 문서 작성~~ ✅ 완료 (`docs/01-plan/features/meta-pipe-v3.plan.md`)
 - ~~우선순위 1: v3 Design 문서 작성~~ ✅ 완료 (`docs/02-design/features/meta-pipe-v3.design.md`)
-- **우선순위 1: module-1(SKILL.md)부터 순차 구현 + 테스트** (v2 교훈 적용)
+- ~~module-1: SKILL.md 오케스트레이터~~ ✅ 완료
+- ~~module-2: consult.md 구현~~ ✅ 완료
+- **우선순위 1: module-2 테스트 (T-01)** — `/meta-pipe` 실행 → Phase A 동작 확인 → 테스트 통과 후 module-3
 - 우선순위 3: meta-pipe 자체를 만드는 과정이 첫 번째 테스트 케이스
 
 ## 주의 사항
