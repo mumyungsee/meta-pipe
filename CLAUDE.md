@@ -21,7 +21,7 @@
 ## 프로젝트 상태
 
 - 현재 버전: v3 (v1, v2는 `archive/`에 보존)
-- 현재 단계: **module-4 T-04 통과, Gap 분석 대기**
+- 현재 단계: **module-4 Gap 분석 완료 (100%), module-5 대기**
 - 핵심 변경: "처음부터 생성" → "검증된 사례 검색 + 적용"
 - Plan 문서: `docs/01-plan/features/meta-pipe-v3.plan.md`
 - Design 문서: `docs/02-design/features/meta-pipe-v3.design.md`
@@ -157,7 +157,7 @@ meta-pipe/
 | module-1 | SKILL.md 기본 구조 | ✅ 완료 | `skills/meta-pipe/SKILL.md` |
 | module-2 | Phase A (Consult) | ✅ 테스트 통과 (T-01) | `references/consult.md` |
 | module-3 | Phase B (Search) | ✅ Gap 분석 완료 (100%) | `references/search.md` |
-| module-4 | Phase C (Adapt) | ✅ T-04 통과 | `references/adapt.md` |
+| module-4 | Phase C (Adapt) | ✅ Gap 분석 완료 (100%) | `references/adapt.md` |
 | module-5 | Phase E (Execute) | 대기 | `references/execute.md` |
 | module-6 | 테스트 + 개선 | 대기 | end-to-end 검증 |
 
@@ -182,8 +182,8 @@ meta-pipe/
 - ~~module-4 Plan~~ ✅ 완료 (`docs/03-do/module-4-phase-c/plan.md`)
 - ~~module-4 구현~~ ✅ 완료 (`references/adapt.md`)
 - ~~module-4 테스트 (T-04)~~ ✅ 통과 — sage-wiki 사례 적용, pipeline.json 6 steps, adaptations 4개
-- **우선순위 1: module-4 Gap 분석** → `docs/03-do/module-4-phase-c/analysis.md`
-- 우선순위 2: module-5 Plan (Phase E: Execute)
+- ~~module-4 Gap 분석~~ ✅ 완료 (100%, 30/30 항목 Match)
+- **우선순위 1: module-5 Plan (Phase E: Execute)**
 - 우선순위 3: meta-pipe 자체를 만드는 과정이 첫 번째 테스트 케이스
 
 ## 주의 사항
