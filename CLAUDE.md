@@ -21,7 +21,7 @@
 ## 프로젝트 상태
 
 - 현재 버전: v3 (v1, v2는 `archive/`에 보존)
-- 현재 단계: **module-4 Gap 분석 완료 (100%), module-5 대기**
+- 현재 단계: **module-5 구현 완료, 테스트(T-05) 대기**
 - 핵심 변경: "처음부터 생성" → "검증된 사례 검색 + 적용"
 - Plan 문서: `docs/01-plan/features/meta-pipe-v3.plan.md`
 - Design 문서: `docs/02-design/features/meta-pipe-v3.design.md`
@@ -108,7 +108,9 @@ meta-pipe/
 │   │   ├── module-3-phase-b/
 │   │   │   ├── plan.md
 │   │   │   └── analysis.md
-│   │   └── module-4-phase-c/
+│   │   ├── module-4-phase-c/
+│   │   │   └── plan.md
+│   │   └── module-5-phase-e/
 │   │       └── plan.md
 │   ├── 04-check/
 │   └── 05-act/
@@ -118,7 +120,8 @@ meta-pipe/
 │       └── references/
 │           ├── consult.md        # Phase A
 │           ├── search.md         # Phase B
-│           └── adapt.md          # Phase C
+│           ├── adapt.md          # Phase C
+│           └── execute.md        # Phase E
 ├── test/
 │   └── lecture-wiki-automation/  # T-01~T-04 테스트 산출물
 │       └── pipeline/
@@ -158,7 +161,7 @@ meta-pipe/
 | module-2 | Phase A (Consult) | ✅ 테스트 통과 (T-01) | `references/consult.md` |
 | module-3 | Phase B (Search) | ✅ Gap 분석 완료 (100%) | `references/search.md` |
 | module-4 | Phase C (Adapt) | ✅ Gap 분석 완료 (100%) | `references/adapt.md` |
-| module-5 | Phase E (Execute) | 대기 | `references/execute.md` |
+| module-5 | Phase E (Execute) | ✅ 구현 완료 (테스트 대기) | `references/execute.md` |
 | module-6 | 테스트 + 개선 | 대기 | end-to-end 검증 |
 
 ## 개발 방법론 (v3부터 적용)
@@ -183,8 +186,12 @@ meta-pipe/
 - ~~module-4 구현~~ ✅ 완료 (`references/adapt.md`)
 - ~~module-4 테스트 (T-04)~~ ✅ 통과 — sage-wiki 사례 적용, pipeline.json 6 steps, adaptations 4개
 - ~~module-4 Gap 분석~~ ✅ 완료 (100%, 30/30 항목 Match)
-- **우선순위 1: module-5 Plan (Phase E: Execute)**
-- 우선순위 3: meta-pipe 자체를 만드는 과정이 첫 번째 테스트 케이스
+- ~~module-5 Plan~~ ✅ 완료 (`docs/03-do/module-5-phase-e/plan.md`)
+- ~~module-5 구현~~ ✅ 완료 (`references/execute.md`)
+- **우선순위 1: module-5 테스트 (T-05) — lecture-wiki-automation pipeline 실행**
+- 우선순위 2: module-5 Gap 분석
+- 우선순위 3: module-6 통합 테스트 (end-to-end)
+- 우선순위 4: meta-pipe 자체를 만드는 과정이 첫 번째 테스트 케이스
 
 ## 주의 사항
 
