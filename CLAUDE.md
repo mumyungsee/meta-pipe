@@ -5,7 +5,7 @@
 ## 프로젝트 상태
 
 - 현재 버전: v3 (v1, v2는 `archive/`에 보존)
-- 현재 단계: **module-4 구현 완료, T-04 테스트 대기**
+- 현재 단계: **module-4 T-04 통과, Gap 분석 대기**
 - 핵심 변경: "처음부터 생성" → "검증된 사례 검색 + 적용"
 - Plan 문서: `docs/01-plan/features/meta-pipe-v3.plan.md`
 - Design 문서: `docs/02-design/features/meta-pipe-v3.design.md`
@@ -104,10 +104,12 @@ meta-pipe/
 │           ├── search.md         # Phase B
 │           └── adapt.md          # Phase C
 ├── test/
-│   └── lecture-wiki-automation/  # T-01~T-03 테스트 산출물
+│   └── lecture-wiki-automation/  # T-01~T-04 테스트 산출물
 │       └── pipeline/
 │           ├── consult.json
-│           └── search-results.json
+│           ├── search-results.json
+│           ├── pipeline.json
+│           └── pipeline.md
 ```
 
 ## 문서 운영 규칙
@@ -139,7 +141,7 @@ meta-pipe/
 | module-1 | SKILL.md 기본 구조 | ✅ 완료 | `skills/meta-pipe/SKILL.md` |
 | module-2 | Phase A (Consult) | ✅ 테스트 통과 (T-01) | `references/consult.md` |
 | module-3 | Phase B (Search) | ✅ Gap 분석 완료 (100%) | `references/search.md` |
-| module-4 | Phase C (Adapt) | ✅ 구현 완료, 테스트 대기 | `references/adapt.md` |
+| module-4 | Phase C (Adapt) | ✅ T-04 통과 | `references/adapt.md` |
 | module-5 | Phase E (Execute) | 대기 | `references/execute.md` |
 | module-6 | 테스트 + 개선 | 대기 | end-to-end 검증 |
 
@@ -163,8 +165,18 @@ meta-pipe/
 - ~~module-3 Gap 분석~~ ✅ 완료 (100%, 7/7 항목 Match)
 - ~~module-4 Plan~~ ✅ 완료 (`docs/03-do/module-4-phase-c/plan.md`)
 - ~~module-4 구현~~ ✅ 완료 (`references/adapt.md`)
-- **우선순위 1: module-4 테스트 (T-04)** → lecture-wiki-automation으로 검증
+- ~~module-4 테스트 (T-04)~~ ✅ 통과 — sage-wiki 사례 적용, pipeline.json 6 steps, adaptations 4개
+- **우선순위 1: module-4 Gap 분석** → `docs/03-do/module-4-phase-c/analysis.md`
+- 우선순위 2: module-5 Plan (Phase E: Execute)
 - 우선순위 3: meta-pipe 자체를 만드는 과정이 첫 번째 테스트 케이스
+
+## 세션 마무리 규칙
+
+사용자가 세션을 끝내려는 신호("마무리", "끝", "오늘은 여기까지", "다음에 이어서" 등)를 보내면, 묻지 않고 아래 순서로 자동 실행:
+
+1. **CLAUDE.md 맥락 업데이트** — 진행 상황, 다음 작업, 파일 구조 변경 반영
+2. **메모리 업데이트** — 새로 알게 된 피드백/프로젝트 상태가 있으면 저장
+3. **git commit + push** — 변경 파일을 커밋하고 현재 브랜치에 push
 
 ## 주의 사항
 
