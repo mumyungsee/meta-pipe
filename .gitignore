@@ -10,6 +10,10 @@ node_modules/
 runtime/cache/
 runtime/logs/
 
+# bkit local state (machine-specific, do not sync)
+.bkit/state/
+.bkit/runtime/
+
 # Do 산출물 내 민감 파일/대용량
 test/*/pipeline/output/node_modules/
 test/*/pipeline/output/**/client_secret.json
