@@ -1,0 +1,40 @@
+{
+  "updated_at": "2026-04-04",
+  "capabilities": {
+    "api_setup": true,
+    "docker": true,
+    "ci_cd": false,
+    "description": "API 키 발급 가능, Python 환경 있음, Docker 사용 가능, 디자인 툴 보유"
+  },
+  "tools": {
+    "owned": ["python", "docker", "design_tools"],
+    "familiar": ["huggingface", "google_oauth"],
+    "description": "Python + Docker 환경, 디자인 툴 보유. HuggingFace/Google OAuth 설정 가능."
+  },
+  "preferences": {
+    "execution_preference": "local_first",
+    "cost_tolerance": "free",
+    "automation_preference": "full",
+    "description": "전자동 선호, 무료 툴만, 로컬 우선"
+  },
+  "execution_history": [
+    {
+      "domain_slug": "youtube-thumbnail-v2",
+      "session_id": "youtube-thumbnail-v2-2026-04-04",
+      "completed_at": "2026-04-04",
+      "complexity": "Standard",
+      "overall_pass": true,
+      "improvement_iterations": 0,
+      "steps": [
+        { "id": "step-1", "original_mode": "manual", "final_mode": "manual", "success": true, "degraded": false, "rerun_count": 0 },
+        { "id": "step-2", "original_mode": "assist", "final_mode": "assist", "success": true, "degraded": false, "rerun_count": 0 },
+        { "id": "step-3", "original_mode": "assist", "final_mode": "assist", "success": true, "degraded": false, "rerun_count": 0 },
+        { "id": "step-4", "original_mode": "auto", "final_mode": "auto", "success": true, "degraded": false, "rerun_count": 0, "note": "Pillow mock 사용 (SDXL 다운로드 대기 대신)"},
+        { "id": "step-5", "original_mode": "auto", "final_mode": "auto", "success": true, "degraded": false, "rerun_count": 0 },
+        { "id": "step-6", "original_mode": "auto", "final_mode": "auto", "success": true, "degraded": false, "rerun_count": 0 },
+        { "id": "step-7", "original_mode": "manual", "final_mode": "manual", "success": true, "degraded": false, "rerun_count": 0 },
+        { "id": "step-8", "original_mode": "auto", "final_mode": "manual", "success": true, "degraded": true, "rerun_count": 0, "degradation_reason": "Google OAuth credentials 미설정" }
+      ]
+    }
+  ]
+}

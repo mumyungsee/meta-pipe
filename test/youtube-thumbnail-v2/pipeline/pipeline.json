@@ -1,0 +1,215 @@
+{
+  "version": "2.0",
+  "phase": "C",
+  "created_at": "2026-04-04T00:03:00Z",
+  "summary": "8단계 파이프라인. auto 4개(이미지생성/텍스트합성/품질검증/업로드) / assist 2개(메타데이터/프롬프트) / manual 2개(환경설정/최종승인). 세팅 필요 3건: HF token, Google OAuth, Python packages.",
+
+  "meta": {
+    "domain": "유튜브 섬네일 자동화",
+    "domain_slug": "youtube-thumbnail-v2",
+    "total_steps": 8,
+    "complexity": "Standard",
+    "adaptive_depth": "Full 기준 (워크플로우 6개 + tools 4개 + quality high)"
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "name": "API 환경 설정 확인",
+      "purpose": "HuggingFace 및 Google OAuth 인증 설정 확인",
+      "tasks": [
+        "HuggingFace API token 발급 및 환경변수 설정",
+        "Google Cloud Console OAuth 2.0 credentials.json 다운로드",
+        "Python 라이브러리 설치"
+      ],
+      "done_criteria": "HF token 인증 성공 + Google OAuth flow 완료",
+      "execution_mode": "manual",
+      "upgraded_from": null,
+      "required_tools": ["huggingface_hub", "google-auth-oauthlib"],
+      "domain_warnings": ["credentials.json 파일 절대 커밋 금지"],
+      "approval_required": true,
+      "depends_on": [],
+      "execution": {
+        "pattern": "pipeline",
+        "agent_type": "conversational",
+        "delegation": "Task"
+      }
+    },
+    {
+      "id": "step-2",
+      "name": "영상 메타데이터 수집",
+      "purpose": "섬네일 생성에 필요한 영상 컨텍스트 확보",
+      "tasks": [
+        "영상 ID 입력 또는 YouTube API에서 메타데이터 조회",
+        "제목, 설명, 핵심 키워드 추출"
+      ],
+      "done_criteria": "metadata.json 생성 (video_id, title, description, keywords)",
+      "execution_mode": "assist",
+      "upgraded_from": null,
+      "required_tools": ["google-api-python-client"],
+      "domain_warnings": ["API 없이 직접 입력 가능 (YouTube API quota 절약)"],
+      "approval_required": true,
+      "depends_on": ["step-1"],
+      "execution": {
+        "pattern": "producer-reviewer",
+        "agent_type": "tool-caller",
+        "delegation": "Task"
+      }
+    },
+    {
+      "id": "step-3",
+      "name": "SDXL 프롬프트 생성",
+      "purpose": "섬네일 스타일에 최적화된 SDXL 프롬프트 작성",
+      "tasks": [
+        "영상 메타데이터에서 시각적 키워드 추출",
+        "긍정 프롬프트 작성 (주제, 분위기, LoRA trigger word 포함)",
+        "부정 프롬프트 작성"
+      ],
+      "done_criteria": "prompt.json 생성 (positive_prompt, negative_prompt) + 사용자 승인",
+      "execution_mode": "assist",
+      "upgraded_from": null,
+      "required_tools": [],
+      "domain_warnings": ["LoRA trigger word 'youtube thumbnail, ytb' 포함 필수"],
+      "approval_required": true,
+      "depends_on": ["step-2"],
+      "execution": {
+        "pattern": "producer-reviewer",
+        "agent_type": "conversational",
+        "delegation": "Task"
+      }
+    },
+    {
+      "id": "step-4",
+      "name": "섬네일 이미지 생성",
+      "purpose": "SDXL LoRA로 고품질 배경 이미지 생성",
+      "tasks": [
+        "itzzdeep/youtube-thumbnails-sdxl-lora-v3 로드",
+        "AutoPipelineForText2Image로 이미지 생성",
+        "HF Inference API fallback 처리"
+      ],
+      "done_criteria": "raw_image.png 생성 (1280×720 이상)",
+      "execution_mode": "auto",
+      "upgraded_from": null,
+      "required_tools": ["diffusers", "torch", "safetensors"],
+      "domain_warnings": [
+        "HF rate limit 있음 (무료 tier)",
+        "CPU 실행 시 ~10분 소요"
+      ],
+      "approval_required": false,
+      "depends_on": ["step-3"],
+      "execution": {
+        "pattern": "pipeline",
+        "agent_type": "tool-caller",
+        "delegation": "Task"
+      }
+    },
+    {
+      "id": "step-5",
+      "name": "텍스트 오버레이 합성",
+      "purpose": "제목 텍스트를 Safe Zone 내 합성",
+      "tasks": [
+        "Google Fonts에서 무료 폰트 사용",
+        "Safe Zone (중앙 1235×338 px) 내 텍스트 배치",
+        "WCAG AA 명암비 기준 아웃라인 적용"
+      ],
+      "done_criteria": "thumbnail_with_text.png 생성",
+      "execution_mode": "auto",
+      "upgraded_from": null,
+      "required_tools": ["Pillow"],
+      "domain_warnings": [
+        "하단 우측 시간 오버레이 영역 텍스트 배치 금지",
+        "Google Fonts (CC0) 폰트만 사용"
+      ],
+      "approval_required": false,
+      "depends_on": ["step-4"],
+      "execution": {
+        "pattern": "pipeline",
+        "agent_type": "tool-caller",
+        "delegation": "Task"
+      }
+    },
+    {
+      "id": "step-6",
+      "name": "품질 자동 검증",
+      "purpose": "YouTube 업로드 기준 및 평가 기준 충족 확인",
+      "tasks": [
+        "해상도 검증: 1280×720 이상",
+        "파일 크기 검증: 2MB 이하",
+        "명암비 측정: WCAG AA 4.5:1 기준",
+        "포맷 검증: JPEG 또는 PNG"
+      ],
+      "done_criteria": "validation_result.json 생성 (overall_pass: true)",
+      "execution_mode": "auto",
+      "upgraded_from": null,
+      "required_tools": ["Pillow", "opencv-python"],
+      "domain_warnings": ["검증 실패 시 step-5로 rollback"],
+      "approval_required": false,
+      "depends_on": ["step-5"],
+      "execution": {
+        "pattern": "pipeline",
+        "agent_type": "tool-caller",
+        "delegation": "Task"
+      }
+    },
+    {
+      "id": "step-7",
+      "name": "사용자 최종 승인",
+      "purpose": "정성적 품질 검수 (AI 단독 CTR 하락 리스크 방지)",
+      "tasks": [
+        "섬네일 이미지 확인 (브랜드 일관성, 클릭 유도 느낌)",
+        "모바일 미리보기 텍스트 가독성 확인",
+        "승인 또는 재생성 요청"
+      ],
+      "done_criteria": "사용자 승인 완료",
+      "execution_mode": "manual",
+      "upgraded_from": null,
+      "required_tools": [],
+      "domain_warnings": ["AI 단독 운영 시 3주 내 CTR 0.7~2.3p 하락 (31% 사례) — 생략 금지"],
+      "approval_required": true,
+      "depends_on": ["step-6"],
+      "execution": {
+        "pattern": "pipeline",
+        "agent_type": "conversational",
+        "delegation": "Task"
+      }
+    },
+    {
+      "id": "step-8",
+      "name": "YouTube API 업로드",
+      "purpose": "완성된 섬네일을 YouTube 영상에 설정",
+      "tasks": [
+        "OAuth 2.0 인증 (token.json 갱신)",
+        "thumbnails.set API 호출 (50 units 소비)",
+        "업로드 결과 확인"
+      ],
+      "done_criteria": "YouTube 영상 섬네일 업로드 성공 + upload_result.json 저장",
+      "execution_mode": "auto",
+      "upgraded_from": null,
+      "required_tools": ["google-api-python-client", "google-auth-oauthlib"],
+      "domain_warnings": ["일 quota 10,000 units (썸네일 업로드 최대 200회/일)"],
+      "approval_required": false,
+      "depends_on": ["step-7"],
+      "execution": {
+        "pattern": "pipeline",
+        "agent_type": "tool-caller",
+        "delegation": "Task"
+      }
+    }
+  ],
+  "setup_requirements": [
+    {
+      "tool": "HuggingFace API token",
+      "reason": "step-4 SDXL 이미지 생성 (HF Inference API 사용 시)",
+      "setup_guide": "https://huggingface.co/settings/tokens 에서 발급 후 HF_TOKEN 환경변수 설정"
+    },
+    {
+      "tool": "Google OAuth credentials",
+      "reason": "step-2, step-8 YouTube Data API v3 접근",
+      "setup_guide": "Google Cloud Console → API 및 서비스 → OAuth 2.0 클라이언트 ID 생성 → credentials.json 다운로드"
+    },
+    {
+      "tool": "Python packages",
+      "reason": "step-4~6, 8 실행",
+      "setup_guide": "pip install diffusers torch Pillow opencv-python google-api-python-client google-auth-oauthlib safetensors"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "model_id": "itzzdeep/youtube-thumbnails-sdxl-lora-v3",
+  "positive_prompt": "youtube thumbnail, ytb, python programming tutorial, automation workflow, laptop with glowing code on screen, futuristic tech background, bright orange and blue color scheme, professional youtube style, bold typography space on left side, high contrast, vibrant, cinematic lighting, 16:9 aspect ratio, no text, no letters",
+  "negative_prompt": "blurry, low quality, watermark, text, letters, words, ugly, distorted faces, bad anatomy, low resolution, dark, muddy colors, cluttered background, nsfw",
+  "lora_scale": 0.8,
+  "seed": 42,
+  "approved_at": "2026-04-04T00:07:00Z"
+}

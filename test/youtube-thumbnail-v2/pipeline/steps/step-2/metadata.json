@@ -1,0 +1,8 @@
+{
+  "video_id": "test-video-001",
+  "title": "파이썬 자동화 실전 강의 - 10분 만에 유튜브 섬네일 자동 생성하기",
+  "description": "diffusers와 YouTube API를 활용해 섬네일을 자동으로 생성하고 업로드하는 파이썬 스크립트를 만들어봅니다.",
+  "keywords": ["파이썬", "자동화", "유튜브", "섬네일", "AI", "diffusers"],
+  "source": "manual_input",
+  "collected_at": "2026-04-04T00:06:00Z"
+}

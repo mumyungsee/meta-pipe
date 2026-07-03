@@ -1,0 +1,52 @@
+{
+  "version": "2.0",
+  "phase": "A",
+  "created_at": "2026-04-04T00:00:00Z",
+  "summary": "유튜브 섬네일 자동화. HuggingFace SDXL LoRA로 섬네일 생성 + YouTube Data API로 업로드. Standard 복잡도. 전자동, 고품질, 무료 전용.",
+
+  "requirements": {
+    "goal": "유튜브 섬네일을 AI로 자동 생성하고 YouTube API로 자동 업로드하는 파이프라인",
+    "automation_level": "full",
+    "target_user": "human",
+    "quality_expectation": "high"
+  },
+  "user_profile": {
+    "tools": ["huggingface", "python", "docker", "design_tools", "google_oauth"],
+    "capabilities": "API 키 발급 가능, Python 환경 있음, Docker 사용 가능, 디자인 툴 보유",
+    "willingness": "high",
+    "budget": "free"
+  },
+  "selected_path": {
+    "id": "path-1-hf-sdxl",
+    "description": "HuggingFace SDXL LoRA 기반 섬네일 이미지 생성 + Pillow 텍스트 합성 + YouTube Data API v3 업로드",
+    "tradeoffs": "HuggingFace Inference API rate limit 있음(무료 tier). GPU 없으면 생성 속도 느릴 수 있음."
+  },
+  "eval_criteria": [
+    {
+      "type": "quantitative",
+      "criterion": "이미지 해상도 1280×720 이상",
+      "auto_checkable": true
+    },
+    {
+      "type": "quantitative",
+      "criterion": "파일 크기 2MB 이하 + 포맷 JPEG/PNG 유효성",
+      "auto_checkable": true
+    },
+    {
+      "type": "quantitative",
+      "criterion": "텍스트 오버레이 명암비 WCAG AA 기준 (4.5:1 이상)",
+      "auto_checkable": true
+    },
+    {
+      "type": "qualitative",
+      "criterion": "브랜드 일관성 및 클릭 유도 느낌",
+      "auto_checkable": false
+    },
+    {
+      "type": "qualitative",
+      "criterion": "전반적 디자인 품질 (구도, 텍스트 배치)",
+      "auto_checkable": false
+    }
+  ],
+  "complexity": "Standard"
+}
